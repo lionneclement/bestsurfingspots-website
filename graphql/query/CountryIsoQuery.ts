@@ -22,6 +22,7 @@ export const COUNTRY_ISO = gql`
         }
       }
       continent {
+        id
         name
       }
     }

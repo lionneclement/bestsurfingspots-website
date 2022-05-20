@@ -9,7 +9,11 @@ module.exports = {
         xl: '1280px'
       }
     },
-    extend: {}
+    extend: {
+      colors: {
+        primary: '#0c717e'
+      }
+    }
   },
   plugins: []
 };
