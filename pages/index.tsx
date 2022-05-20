@@ -15,9 +15,15 @@ export const getServerSideProps = async (): Promise<GetStaticPropsResult<{countr
 
 const Home: NextPage<{countryIso: HomeCountryIso[]}> = ({countryIso}) => {
   const [continentActiveId, setContinentActiveId] = useState<number>();
+  const defaultMaxCostOfLiving = 10000;
+  const [maxCostOfLiving, setMaxCostOfLiving] = useState<number>(defaultMaxCostOfLiving);
 
   const onContinentClicked = (continentId: number) => {
     setContinentActiveId(continentId === continentActiveId ? undefined : continentId);
+  };
+
+  const onCostOfLivingClicked = (costOfLiving: number) => {
+    setMaxCostOfLiving(costOfLiving === maxCostOfLiving ? defaultMaxCostOfLiving : costOfLiving);
   };
 
   return (
@@ -31,10 +37,10 @@ const Home: NextPage<{countryIso: HomeCountryIso[]}> = ({countryIso}) => {
         <h1 className="text-center text-primary font-bold text-4xl mt-10">Best Surfing Spots</h1>
         <p className="text-center text-gray-400 font-medium text-lg mt-2">the best places to surf in the world</p>
         <div className="flex">
-          <div className="mt-6  w-[30%] h-fit ml-4 mr-6">
+          <div className="mt-6 w-[30%] h-fit ml-4 mr-6">
             <div>
               <label className="font-medium">Where ?</label>
-              <div className="grid grid-rows-2 grid-cols-3 gap-2 mt-4">
+              <div className="grid grid-rows-2 grid-cols-3 gap-2 mt-2">
                 {[
                   {name: '🌎 Northern America', id: 1},
                   {name: '💃 Latin America', id: 2},
@@ -48,7 +54,7 @@ const Home: NextPage<{countryIso: HomeCountryIso[]}> = ({countryIso}) => {
                       onClick={() => onContinentClicked(id)}
                       style={continentActiveId === id ? {background: '#0c717e', color: 'white'} : {}}
                       role="button"
-                      className="py-2 px-2 border rounded-lg hover:bg-primary hover:text-white text-center flex justify-center items-center"
+                      className="py-2 px-2 border rounded-lg text-center flex justify-center items-center"
                       key={index}>
                       <span>{name}</span>
                     </div>
@@ -57,19 +63,18 @@ const Home: NextPage<{countryIso: HomeCountryIso[]}> = ({countryIso}) => {
               </div>
             </div>
             <div className="mt-6">
-              <label className="font-medium">Language ?</label>
-              <div className="grid grid-rows-2 grid-cols-3 gap-4 mt-4">
+              <label className="font-medium">Cost of living ?</label>
+              <div className="grid grid-rows-2 grid-cols-2 gap-2 mt-4">
                 {[
-                  {name: 'English', id: 11},
-                  {name: 'Spanish', id: 20},
-                  {name: 'French', id: 18}
-                ].map(({name, id}, index) => {
+                  {name: '💰<€1K/mo', costOfLiving: 1000},
+                  {name: '💰<€2K/mo', costOfLiving: 2000}
+                ].map(({name, costOfLiving}, index) => {
                   return (
                     <div
-                      onClick={() => onContinentClicked(id)}
-                      style={continentActiveId === id ? {background: '#0c717e', color: 'white'} : {}}
+                      onClick={() => onCostOfLivingClicked(costOfLiving)}
+                      style={maxCostOfLiving === costOfLiving ? {background: '#0c717e', color: 'white'} : {}}
                       role="button"
-                      className="py-2 px-2 border rounded-lg hover:bg-primary hover:text-white text-center flex justify-center items-center"
+                      className="py-2 px-2 border rounded-lg text-center flex justify-center items-center"
                       key={index}>
                       <span>{name}</span>
                     </div>
@@ -105,7 +110,10 @@ const Home: NextPage<{countryIso: HomeCountryIso[]}> = ({countryIso}) => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {countryIso.map(({emoji, name, cost_of_livings, language_country_isos, continent}, index) => {
-                if (!continentActiveId || continentActiveId === continent.id)
+                if (
+                  (!continentActiveId || continentActiveId === continent.id) &&
+                  maxCostOfLiving > cost_of_livings[0].single_person
+                )
                   return (
                     <tr key={index}>
                       <td className="px-6 py-4 whitespace-nowrap">
