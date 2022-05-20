@@ -1,6 +1,7 @@
 import type {GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
+import {Column, useSortBy, useTable} from 'react-table';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {COUNTRY_ISO} from '../graphql/query/CountryIsoQuery';
 import {HomeCountryIso} from '../graphql/types/CountryIso';
@@ -25,6 +26,46 @@ const Home: NextPage<{countryIso: HomeCountryIso[]}> = ({countryIso}) => {
   const onCostOfLivingClicked = (costOfLiving: number) => {
     setMaxCostOfLiving(costOfLiving === maxCostOfLiving ? defaultMaxCostOfLiving : costOfLiving);
   };
+
+  const columns: Array<Column<{country: string; 'cost-of-living': string; languages: string; continent: string}>> =
+    useMemo(
+      () => [
+        {
+          Header: 'Country',
+          accessor: 'country'
+        },
+        {
+          Header: 'Cost of living',
+          accessor: 'cost-of-living'
+        },
+        {
+          Header: 'Languages',
+          accessor: 'languages'
+        },
+        {
+          Header: 'Continent',
+          accessor: 'continent'
+        }
+      ],
+      []
+    );
+
+  const data = useMemo(
+    () =>
+      countryIso.map(({emoji, name, cost_of_livings, language_country_isos, continent}) => {
+        return {
+          country: `${emoji} ${name}`,
+          'cost-of-living': `€ ${cost_of_livings[0].single_person}`,
+          languages: language_country_isos[0].language.name,
+          continent: continent.name
+        };
+      }),
+    [countryIso]
+  );
+
+  const tableInstance = useTable({columns, data}, useSortBy);
+
+  const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} = tableInstance;
 
   return (
     <>
@@ -83,47 +124,36 @@ const Home: NextPage<{countryIso: HomeCountryIso[]}> = ({countryIso}) => {
               </div>
             </div>
           </div>
-          <table className="divide-y divide-gray-200 mt-6 col-span-2 w-[60%]">
+          <table {...getTableProps()} className="divide-y divide-gray-200 mt-6 col-span-2 w-[60%]">
             <thead className="bg-gray-50">
-              <tr>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Country
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Cost of living
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Languages
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Continent
-                </th>
-              </tr>
+              {headerGroups.map((headerGroup, index) => (
+                <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                  {headerGroup.headers.map((column: any) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      key={index}
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      {column.render('Header')}
+                      <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                    </th>
+                  ))}
+                </tr>
+              ))}
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {countryIso.map(({emoji, name, cost_of_livings, language_country_isos, continent}, index) => {
-                if (
-                  (!continentActiveId || continentActiveId === continent.id) &&
-                  maxCostOfLiving > cost_of_livings[0].single_person
-                )
-                  return (
-                    <tr key={index}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {emoji} {name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">€ {cost_of_livings[0].single_person}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">{language_country_isos[0].language.name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">{continent.name}</td>
-                    </tr>
-                  );
+            <tbody {...getTableBodyProps()} className="bg-white divide-y divide-gray-200">
+              {rows.map((row, index) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()} key={index}>
+                    {row.cells.map((cell, index) => {
+                      return (
+                        <td {...cell.getCellProps()} key={index} className="px-6 py-4 whitespace-nowrap">
+                          {cell.render('Cell')}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
               })}
             </tbody>
           </table>
