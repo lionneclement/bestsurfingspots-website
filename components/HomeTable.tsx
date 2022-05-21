@@ -16,20 +16,14 @@ export const HomeTable = ({
     rows.filter((row) => Number(row.original.costofliving.replace('€ ', '')) <= costofliving);
 
   const continentFilter = (rows: {original: {continent: string}}[], _: string[], continentId: number) => {
-    console.log('continentId: ', continentId);
-    const continentName = continentData.filter(({id})=> id === continentId)[0].name;
-    console.log('continentName: ', continentName);
+    const continentName = continentData.filter(({id}) => id === continentId)[0].name;
     return rows.filter((row) => continentName.includes(row.original.continent));
   };
 
   const columns: Array<Column<{country: string; costofliving: string; languages: string; continent: string}>> = useMemo(
     () => [
       {Header: 'Country', accessor: 'country'},
-      {
-        Header: 'Cost of living',
-        accessor: 'costofliving',
-        filter: costOfLivingFilter
-      },
+      {Header: 'Cost of living', accessor: 'costofliving', filter: costOfLivingFilter},
       {Header: 'Languages', accessor: 'languages'},
       {Header: 'Continent', accessor: 'continent', filter: continentFilter}
     ],
