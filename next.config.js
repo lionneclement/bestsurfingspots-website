@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-}
+  swcMinify: true,
+  rewrites: async () => {
+    return {
+      fallback: [
+        {
+          source: '/country/:id(\\d{1,})-:slug',
+          destination: '/country?id=:id&slug=:slug'
+        }
+      ]
+    };
+  }
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

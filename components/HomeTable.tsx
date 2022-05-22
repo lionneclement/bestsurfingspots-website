@@ -1,7 +1,9 @@
+import Link from 'next/link';
 import {useEffect, useMemo} from 'react';
 import {Column, useFilters, useSortBy, useTable} from 'react-table';
 import {continentData} from '../data/ContinentData';
 import {HomeCountryIso} from '../graphql/types/CountryIso';
+import {customSlugify} from '../utils/slugify';
 
 export const HomeTable = ({
   countryIso,
@@ -32,9 +34,11 @@ export const HomeTable = ({
 
   const data = useMemo(
     () =>
-      countryIso.map(({emoji, name, cost_of_livings, language_country_isos, continent}) => {
+      countryIso.map(({emoji, name, cost_of_livings, language_country_isos, continent, id}) => {
         return {
-          country: `${emoji} ${name}`,
+          id,
+          emoji,
+          country: name,
           costofliving: `€ ${cost_of_livings[0].single_person}`,
           languages: language_country_isos[0].language.name,
           continent: continent.name
@@ -50,7 +54,6 @@ export const HomeTable = ({
   );
 
   useEffect(() => setFilter('costofliving', costOfLiving), [costOfLiving]);
-
   useEffect(() => setFilter('continent', continentId), [continentId]);
 
   return (
@@ -76,11 +79,19 @@ export const HomeTable = ({
         {rows.map((row, rowIndex) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()} key={rowIndex}>
+            <tr {...row.getRowProps()} key={rowIndex} className="relative">
               {row.cells.map((cell, cellIndex) => {
                 return (
                   <td {...cell.getCellProps()} key={cellIndex} className="px-6 py-4 whitespace-nowrap">
-                    {cell.render('Cell')}
+                    {cellIndex === 0 ? (
+                      <Link href={customSlugify(`/country/${row.original.id}-${cell.value}`)}>
+                        <a className="stretched-link" title={cell.value}>
+                          {row.original.emoji} {cell.render('Cell')}
+                        </a>
+                      </Link>
+                    ) : (
+                      cell.render('Cell')
+                    )}
                   </td>
                 );
               })}

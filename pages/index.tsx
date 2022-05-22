@@ -4,18 +4,22 @@ import {useState} from 'react';
 import {HomeTable} from '../components/HomeTable';
 import {continentData} from '../data/ContinentData';
 import {graphqlClient} from '../graphql/GraphqlClient';
-import {COUNTRY_ISO} from '../graphql/query/CountryIsoQuery';
+import {HOME_COUNTRY_ISO} from '../graphql/query/CountryIsoQuery';
 import {HomeCountryIso} from '../graphql/types/CountryIso';
 
-export const getServerSideProps = async (): Promise<GetStaticPropsResult<{countryIso: HomeCountryIso[]}>> => {
+interface Props {
+  countryIso: HomeCountryIso[];
+}
+
+export const getServerSideProps = async (): Promise<GetStaticPropsResult<Props>> => {
   const countryIsoResult = await graphqlClient.query<{countryIso: HomeCountryIso[]}>({
-    query: COUNTRY_ISO
+    query: HOME_COUNTRY_ISO
   });
 
   return {props: {countryIso: countryIsoResult.data.countryIso}};
 };
 
-const Home: NextPage<{countryIso: HomeCountryIso[]}> = ({countryIso}) => {
+const Home: NextPage<Props> = ({countryIso}) => {
   const [continentIdActive, setContinentIdActive] = useState<number>();
   const defaultMaxCostOfLiving = 10000;
   const [maxCostOfLiving, setMaxCostOfLiving] = useState<number>(defaultMaxCostOfLiving);

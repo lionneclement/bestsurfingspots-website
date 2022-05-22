@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
-export const COUNTRY_ISO = gql`
-  query CountryIso {
+export const HOME_COUNTRY_ISO = gql`
+  query HomeCountryIso {
     countryIso: country_iso(
       where: {
         emoji: {_is_null: false}
@@ -24,6 +24,42 @@ export const COUNTRY_ISO = gql`
       continent {
         id
         name
+      }
+    }
+  }
+`;
+
+export const COUNTRY_ISO_BY_ID = gql`
+  query CountryIsoById($countryId: Int!) {
+    countryIso: country_iso_by_pk(id: $countryId) {
+      emoji
+      continent {
+        name
+      }
+      name
+      language_country_isos {
+        language {
+          name
+        }
+      }
+      cost_of_livings {
+        beer
+        cigarettes
+        coffee
+        dinner
+        family
+        single_person
+      }
+      countries {
+        name
+        surf_areas {
+          name
+          surf_spots_aggregate {
+            aggregate {
+              count
+            }
+          }
+        }
       }
     }
   }
