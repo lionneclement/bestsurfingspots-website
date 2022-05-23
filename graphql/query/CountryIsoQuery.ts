@@ -53,6 +53,7 @@ export const COUNTRY_ISO_BY_ID = gql`
       countries {
         name
         surf_areas {
+          id
           name
           surf_spots_aggregate {
             aggregate {

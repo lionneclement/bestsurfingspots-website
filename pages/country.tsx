@@ -1,5 +1,6 @@
 import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {COUNTRY_ISO_BY_ID} from '../graphql/query/CountryIsoQuery';
 import {CountryIsoById, CountryIsoByIdVariable} from '../graphql/types/CountryIso';
@@ -31,9 +32,7 @@ const Country: NextPage<Props> = ({countryIso}) => {
   return (
     <>
       <Head>
-        <title>
-          Best Surfing Spots in {countryIso.name}
-        </title>
+        <title>Best Surfing Spots in {countryIso.name}</title>
         <meta name="description" content="the best places to surf in the world" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -77,9 +76,13 @@ const Country: NextPage<Props> = ({countryIso}) => {
             <div key={index}>
               <h3 className="font-bold text-xl mt-4">{name}</h3>
               <div className="flex mt-4 justify-between flex-wrap">
-                {surf_areas.map(({name, surf_spots_aggregate}, index) => (
-                  <span className="w-[45%] flex justify-between mt-2" key={index}>
-                    <strong>{name}</strong>
+                {surf_areas.map(({name, id, surf_spots_aggregate}, index) => (
+                  <span className="w-[45%] flex justify-between mt-2 relative" key={index}>
+                    <Link href={customSlugify(`/surf-area/${id}-${name}`)}>
+                      <a className="stretched-link" title={name}>
+                        <strong>{name}</strong>
+                      </a>
+                    </Link>
                     {surf_spots_aggregate.aggregate.count} spots
                   </span>
                 ))}

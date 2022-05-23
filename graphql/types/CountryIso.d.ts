@@ -23,6 +23,7 @@ export interface CountryIsoById {
   countries: {
     name: string;
     surf_areas: {
+      id: number;
       name: string;
       surf_spots_aggregate: {
         aggregate: {
