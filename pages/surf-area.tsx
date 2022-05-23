@@ -44,7 +44,7 @@ const SurfArea: NextPage<Props> = ({surfArea}) => {
                 <div key={index} className="flex justify-between">
                   <span>{name}</span>
                   <span>{level_surf_spots?.map(({level}) => level.name + '  ')}</span>
-                  <span>{solid_rating}/5 rate</span>
+                  <span>{solid_rating || 0}/5 rate</span>
                 </div>
                 <hr />
               </>

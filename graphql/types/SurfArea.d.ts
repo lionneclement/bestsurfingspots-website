@@ -13,7 +13,7 @@ export interface SurfAreaById {
   }[];
   surf_spots?: {
     name: string;
-    solid_rating: null | number;
+    solid_rating?: null | number;
     level_surf_spots?: {
       level: {
         name: stting;
