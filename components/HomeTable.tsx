@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import {useEffect, useMemo} from 'react';
 import {Column, useFilters, useSortBy, useTable} from 'react-table';
-import {continentData} from '../data/ContinentData';
+import {continentData} from '../data/TableData';
 import {HomeCountryIso} from '../graphql/types/CountryIso';
 import {customSlugify} from '../utils/slugify';
 
@@ -18,6 +18,7 @@ export const HomeTable = ({
     rows.filter((row) => Number(row.original.costofliving.replace('€ ', '')) <= costofliving);
 
   const continentFilter = (rows: {original: {continent: string}}[], _: string[], continentId: number) => {
+    if (continentId === 0) return rows;
     const continentName = continentData.filter(({id}) => id === continentId)[0].name;
     return rows.filter((row) => continentName.includes(row.original.continent));
   };
@@ -57,7 +58,7 @@ export const HomeTable = ({
   useEffect(() => setFilter('continent', continentId), [continentId]);
 
   return (
-    <table {...getTableProps()} className="divide-y divide-gray-200 mt-6 col-span-2 w-[60%]">
+    <table {...getTableProps()} className="divide-y divide-gray-200 mt-2 w-full">
       <thead className="bg-gray-50">
         {headerGroups.map((headerGroup, groupsIndex) => (
           <tr {...headerGroup.getHeaderGroupProps()} key={groupsIndex}>
