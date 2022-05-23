@@ -38,14 +38,16 @@ const SurfArea: NextPage<Props> = ({surfArea}) => {
         <span>{surfArea.country.name}</span>
         <span>{surfArea.country_seasons?.map(({season, month}) => season.name + ' ' + month.name)}</span>
         <span>
-          {surfArea.surf_spots?.map(({name, level_surf_spots}, index) => {
+          {surfArea.surf_spots?.map(({name, level_surf_spots, solid_rating}, index) => {
             return (
-              <div key={index}>
-                <span>{name}</span>
-                {level_surf_spots?.map(({level}, index) => {
-                  return <span key={index}>{level.name}</span>;
-                })}
-              </div>
+              <>
+                <div key={index} className="flex justify-between">
+                  <span>{name}</span>
+                  <span>{level_surf_spots?.map(({level}) => level.name + '  ')}</span>
+                  <span>{solid_rating}/5 rate</span>
+                </div>
+                <hr />
+              </>
             );
           })}
         </span>

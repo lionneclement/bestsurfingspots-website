@@ -20,6 +20,7 @@ export const SURF_AREA_BY_ID = gql`
       name
       surf_spots {
         name
+        solid_rating
         level_surf_spots {
           level {
             name
