@@ -50,7 +50,7 @@ export const COUNTRY_ISO_BY_ID = gql`
         family
         single_person
       }
-      countries {
+      countries(where: {surf_areas: {id: {_is_null: false}}}) {
         name
         surf_areas {
           id
