@@ -10,6 +10,6 @@ export const continentData = [
 
 export const costOfLivingData = [
   {name: 'Cost of living ?', costOfLiving: 10000},
-  {name: '💰<€1K/mo', costOfLiving: 1000},
-  {name: '💰<€2K/mo', costOfLiving: 2000}
+  {name: '💰<$1K/mo', costOfLiving: 1000},
+  {name: '💰<$2K/mo', costOfLiving: 2000}
 ];

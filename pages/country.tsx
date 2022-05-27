@@ -6,6 +6,7 @@ import {graphqlClient} from '../graphql/GraphqlClient';
 import {COUNTRY_ISO_BY_ID} from '../graphql/query/CountryIsoQuery';
 import {CountryIsoById, CountryIsoByIdVariable} from '../graphql/types/CountryIso';
 import {getImageSrc} from '../helpers/Image';
+import {capitalize} from '../helpers/String';
 import {customSlugify} from '../utils/slugify';
 
 interface Props {
@@ -43,7 +44,7 @@ const Country: NextPage<Props> = ({countryIso}) => {
           <Image
             src={getImageSrc(countryIso.image)}
             className="object-cover w-full"
-            alt="colorful leafs"
+            alt={countryIso.name}
             layout="fill"
           />
           <h1 className="absolute bg-[#00000080] w-full h-full text-center text-white font-bold text-4xl pt-32">
@@ -54,33 +55,33 @@ const Country: NextPage<Props> = ({countryIso}) => {
           <h2 className="font-bold text-2xl">Guide</h2>
           <div className="flex mt-4 justify-between">
             <span className="w-[45%] flex justify-between">
-              <strong>Continent</strong>
+              <strong>🌐 Continent</strong>
               {countryIso.continent.name}
             </span>
             <span className="w-[45%] flex justify-between">
-              <strong>Language</strong>
-              {countryIso.language_country_isos.map(({language}) => language.name).join(', ')}
+              <strong>🗣️ Official language</strong>
+              {countryIso.language_country_isos.map(({language}) => capitalize(language.name)).join(', ')}
             </span>
           </div>
           <h2 className="font-bold text-2xl mt-6">Cost of living</h2>
           <div className="flex mt-4 justify-between flex-wrap">
             <span className="w-[45%] flex justify-between">
-              <strong>Single person</strong>€{single_person} / month
+              <strong>💰 Single person</strong>${single_person} / month
             </span>
             <span className="w-[45%] flex justify-between">
-              <strong>Family</strong>€{family} / month
+              <strong>💰 Family of four</strong>${family} / month
             </span>
             <span className="my-2 w-[45%] flex justify-between">
-              <strong>Beer</strong>€{beer}
+              <strong>🍺 Beer (0.5L)</strong>${beer}
             </span>
             <span className="my-2 w-[45%] flex justify-between">
-              <strong>Cigarettes</strong>€{cigarettes}
+              <strong>🚬 1 package of cigarettes</strong>${cigarettes}
             </span>
             <span className="w-[45%] flex justify-between">
-              <strong>Coffee</strong>€{coffee}
+              <strong>☕️ Coffee</strong>${coffee}
             </span>
             <span className="w-[45%] flex justify-between">
-              <strong>Dinner</strong>€{dinner}
+              <strong>🍛 Dinner</strong>${dinner}
             </span>
           </div>
           <h2 className="font-bold text-2xl mt-6">Surf areas</h2>
