@@ -53,34 +53,34 @@ const Country: NextPage<Props> = ({countryIso}) => {
         </section>
         <div className="container py-10">
           <h2 className="font-bold text-2xl">Guide</h2>
-          <div className="flex mt-4 justify-between">
-            <span className="w-[45%] flex justify-between">
+          <div className="md:flex mt-2 justify-between">
+            <span className="md:w-[45%] flex justify-between mt-2">
               <strong>🌐 Continent</strong>
               {countryIso.continent.name}
             </span>
-            <span className="w-[45%] flex justify-between">
+            <span className="md:w-[45%] flex justify-between mt-2">
               <strong>🗣️ Official language</strong>
               {countryIso.language_country_isos.map(({language}) => capitalize(language.name)).join(', ')}
             </span>
           </div>
           <h2 className="font-bold text-2xl mt-16">Cost of living</h2>
-          <div className="flex mt-4 justify-between flex-wrap">
-            <span className="w-[45%] flex justify-between">
+          <div className="md:flex mt-2 justify-between flex-wrap">
+            <span className="md:w-[45%] flex justify-between mt-2">
               <strong>💰 Single person</strong>${single_person} / month
             </span>
-            <span className="w-[45%] flex justify-between">
+            <span className="md:w-[45%] flex justify-between mt-2">
               <strong>💰 Family of four</strong>${family} / month
             </span>
-            <span className="my-2 w-[45%] flex justify-between">
+            <span className="md:w-[45%] flex justify-between mt-2">
               <strong>🍺 Beer (0.5L)</strong>${beer}
             </span>
-            <span className="my-2 w-[45%] flex justify-between">
+            <span className="md:w-[45%] flex justify-between mt-2">
               <strong>🚬 1 package of cigarettes</strong>${cigarettes}
             </span>
-            <span className="w-[45%] flex justify-between">
+            <span className="md:w-[45%] flex justify-between mt-2">
               <strong>☕️ Coffee</strong>${coffee}
             </span>
-            <span className="w-[45%] flex justify-between">
+            <span className="md:w-[45%] flex justify-between mt-2">
               <strong>🍛 Dinner</strong>${dinner}
             </span>
           </div>
@@ -89,9 +89,9 @@ const Country: NextPage<Props> = ({countryIso}) => {
             return (
               <div key={index} className="mt-4">
                 <h3 className="font-bold text-xl">{name}</h3>
-                <div className="flex justify-between flex-wrap">
+                <div className="md:flex justify-between flex-wrap">
                   {surf_areas.map(({name, id, surf_spots_aggregate}, index) => (
-                    <span className="w-[45%] flex justify-between mt-2 relative" key={index}>
+                    <span className="md:w-[45%] flex justify-between mt-2 relative" key={index}>
                       <Link href={customSlugify(`/surf-area/${id}-${name}`)}>
                         <a className="stretched-link" title={name}>
                           <strong>{name}</strong>

@@ -5,7 +5,7 @@ import {Column, useSortBy, useTable} from 'react-table';
 import {SurfAreaById} from '../graphql/types/SurfArea';
 
 export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
-  const columns: Array<Column<{spot: string; star: string}>> = useMemo(
+  const columns: Array<Column<{spot: string; star: number}>> = useMemo(
     () => [
       {Header: 'Spot', accessor: 'spot'},
       {Header: 'Star', accessor: 'star'}
@@ -18,7 +18,7 @@ export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
       surfArea.surf_spots!.map(({name, solid_rating}) => {
         return {
           spot: name,
-          star: solid_rating
+          star: solid_rating || 0
         };
       }),
     [surfArea]
