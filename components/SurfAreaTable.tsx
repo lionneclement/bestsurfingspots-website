@@ -1,12 +1,13 @@
+import {StarIcon as StartIconOutline} from '@heroicons/react/outline';
+import {StarIcon as StartIconSolid} from '@heroicons/react/solid';
 import {useMemo} from 'react';
 import {Column, useSortBy, useTable} from 'react-table';
 import {SurfAreaById} from '../graphql/types/SurfArea';
 
 export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
-  const columns: Array<Column<{spot: string; star: string; level: string}>> = useMemo(
+  const columns: Array<Column<{spot: string; star: string}>> = useMemo(
     () => [
       {Header: 'Spot', accessor: 'spot'},
-      {Header: 'Level', accessor: 'level'},
       {Header: 'Star', accessor: 'star'}
     ],
     []
@@ -14,11 +15,10 @@ export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
 
   const data = useMemo(
     () =>
-      surfArea.surf_spots!.map(({name, solid_rating, level_surf_spots}) => {
+      surfArea.surf_spots!.map(({name, solid_rating}) => {
         return {
           spot: name,
-          star: `${solid_rating || 0}/5`,
-          level: level_surf_spots?.map(({level}) => level.name).join(' | ') || ''
+          star: solid_rating
         };
       }),
     [surfArea]
@@ -53,7 +53,19 @@ export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
               {row.cells.map((cell, cellIndex) => {
                 return (
                   <td {...cell.getCellProps()} key={cellIndex} className="px-6 py-4 whitespace-nowrap">
-                    {cell.render('Cell')}
+                    {cell.column.id === 'star' ? (
+                      <div className="flex">
+                        {Array.from({length: 5}, (_, i) => i + 1).map((index) =>
+                          index <= (cell.value || 0) ? (
+                            <StartIconSolid key={index} className="h-5 w-5 text-primary" />
+                          ) : (
+                            <StartIconOutline key={index} className="h-5 w-5 text-primary" />
+                          )
+                        )}
+                      </div>
+                    ) : (
+                      cell.render('Cell')
+                    )}
                   </td>
                 );
               })}
