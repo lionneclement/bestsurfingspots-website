@@ -17,7 +17,7 @@ export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
       surfArea.surf_spots!.map(({name, solid_rating, level_surf_spots}) => {
         return {
           spot: name,
-          star: `${solid_rating}/5`,
+          star: `${solid_rating || 0}/5`,
           level: level_surf_spots?.map(({level}) => level.name).join(' | ') || ''
         };
       }),

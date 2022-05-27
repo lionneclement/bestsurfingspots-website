@@ -8,6 +8,7 @@ export interface HomeCountryIso {
 }
 
 export interface CountryIsoById {
+  image: string;
   emoji: string;
   continent: {name: string};
   name: string;

@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ['storage.googleapis.com']
+  },
   swcMinify: true,
   rewrites: async () => {
     return {
