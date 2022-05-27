@@ -63,7 +63,7 @@ const Country: NextPage<Props> = ({countryIso}) => {
               {countryIso.language_country_isos.map(({language}) => capitalize(language.name)).join(', ')}
             </span>
           </div>
-          <h2 className="font-bold text-2xl mt-6">Cost of living</h2>
+          <h2 className="font-bold text-2xl mt-16">Cost of living</h2>
           <div className="flex mt-4 justify-between flex-wrap">
             <span className="w-[45%] flex justify-between">
               <strong>💰 Single person</strong>${single_person} / month
@@ -84,12 +84,12 @@ const Country: NextPage<Props> = ({countryIso}) => {
               <strong>🍛 Dinner</strong>${dinner}
             </span>
           </div>
-          <h2 className="font-bold text-2xl mt-6">Surf areas</h2>
+          <h2 className="font-bold text-2xl mt-16">Surf areas</h2>
           {countryIso.countries.map(({name, surf_areas}, index) => {
             return (
-              <div key={index}>
-                <h3 className="font-bold text-xl mt-4">{name}</h3>
-                <div className="flex mt-4 justify-between flex-wrap">
+              <div key={index} className="mt-4">
+                <h3 className="font-bold text-xl">{name}</h3>
+                <div className="flex justify-between flex-wrap">
                   {surf_areas.map(({name, id, surf_spots_aggregate}, index) => (
                     <span className="w-[45%] flex justify-between mt-2 relative" key={index}>
                       <Link href={customSlugify(`/surf-area/${id}-${name}`)}>
@@ -101,6 +101,7 @@ const Country: NextPage<Props> = ({countryIso}) => {
                     </span>
                   ))}
                 </div>
+                {index !== countryIso.countries.length - 1 && <hr className="my-8" />}
               </div>
             );
           })}
