@@ -11,6 +11,9 @@ export interface CountryIsoById {
   image: string;
   emoji: string;
   peace: number;
+  population: number | null;
+  mobile_speed: number | null;
+  broadband_speed: number | null;
   continent: {name: string};
   name: string;
   language_country_isos: {language: {name: string}}[];

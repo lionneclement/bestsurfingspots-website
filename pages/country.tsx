@@ -7,6 +7,7 @@ import {graphqlClient} from '../graphql/GraphqlClient';
 import {COUNTRY_ISO_BY_ID} from '../graphql/query/CountryIsoQuery';
 import {CountryIsoById, CountryIsoByIdVariable} from '../graphql/types/CountryIso';
 import {getImageSrc} from '../helpers/Image';
+import {populationFormatter} from '../helpers/Number';
 import {capitalize} from '../helpers/String';
 import {customSlugify} from '../utils/slugify';
 
@@ -77,6 +78,24 @@ const Country: NextPage<Props> = ({countryIso}) => {
                 ) : (
                   <StarRating value={1} />
                 )}
+              </span>
+            )}
+            {countryIso.population && (
+              <span className="md:w-[45%] flex justify-between mt-2">
+                <strong>📈 Population</strong>
+                {populationFormatter(countryIso.population)}
+              </span>
+            )}
+            {countryIso.broadband_speed && (
+              <span className="md:w-[45%] flex justify-between mt-2">
+                <strong>📶 Broadband Speed</strong>
+                {countryIso.broadband_speed} Mbps
+              </span>
+            )}
+            {countryIso.mobile_speed && (
+              <span className="md:w-[45%] flex justify-between mt-2">
+                <strong>📱 Mobile Speed</strong>
+                {countryIso.mobile_speed} Mbps
               </span>
             )}
           </div>

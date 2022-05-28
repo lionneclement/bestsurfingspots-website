@@ -35,6 +35,9 @@ export const COUNTRY_ISO_BY_ID = gql`
       peace
       image
       emoji
+      population
+      mobile_speed
+      broadband_speed
       continent {
         name
       }
