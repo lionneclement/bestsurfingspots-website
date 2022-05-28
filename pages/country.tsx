@@ -2,6 +2,7 @@ import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'ne
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import {StarRating} from '../components/Star';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {COUNTRY_ISO_BY_ID} from '../graphql/query/CountryIsoQuery';
 import {CountryIsoById, CountryIsoByIdVariable} from '../graphql/types/CountryIso';
@@ -53,7 +54,7 @@ const Country: NextPage<Props> = ({countryIso}) => {
         </section>
         <div className="container py-10">
           <h2 className="font-bold text-2xl">Guide</h2>
-          <div className="md:flex mt-2 justify-between">
+          <div className="md:flex mt-2 justify-between flex-wrap">
             <span className="md:w-[45%] flex justify-between mt-2">
               <strong>🌐 Continent</strong>
               {countryIso.continent.name}
@@ -62,6 +63,22 @@ const Country: NextPage<Props> = ({countryIso}) => {
               <strong>🗣️ Official language</strong>
               {countryIso.language_country_isos.map(({language}) => capitalize(language.name)).join(', ')}
             </span>
+            {countryIso.peace && (
+              <span className="md:w-[45%] flex justify-between mt-2">
+                <strong>👮 Safety</strong>
+                {countryIso.peace < 1.45 ? (
+                  <StarRating value={5} />
+                ) : countryIso.peace < 1.9 ? (
+                  <StarRating value={4} />
+                ) : countryIso.peace < 2.35 ? (
+                  <StarRating value={3} />
+                ) : countryIso.peace < 2.9 ? (
+                  <StarRating value={2} />
+                ) : (
+                  <StarRating value={1} />
+                )}
+              </span>
+            )}
           </div>
           <h2 className="font-bold text-2xl mt-16">Cost of living</h2>
           <div className="md:flex mt-2 justify-between flex-wrap">

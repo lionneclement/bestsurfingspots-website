@@ -10,6 +10,7 @@ export interface HomeCountryIso {
 export interface CountryIsoById {
   image: string;
   emoji: string;
+  peace: number;
   continent: {name: string};
   name: string;
   language_country_isos: {language: {name: string}}[];

@@ -32,6 +32,7 @@ export const HOME_COUNTRY_ISO = gql`
 export const COUNTRY_ISO_BY_ID = gql`
   query CountryIsoById($countryId: Int!) {
     countryIso: country_iso_by_pk(id: $countryId) {
+      peace
       image
       emoji
       continent {
