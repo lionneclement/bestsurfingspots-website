@@ -2,7 +2,7 @@ import {StarIcon as StartIconOutline} from '@heroicons/react/outline';
 import {StarIcon as StartIconSolid} from '@heroicons/react/solid';
 import {useMemo} from 'react';
 import {Column, useSortBy, useTable} from 'react-table';
-import {SurfAreaById} from '../graphql/types/SurfArea';
+import {SurfAreaById} from '../../graphql/types/SurfArea';
 
 export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
   const columns: Array<Column<{spot: string; star: number}>> = useMemo(

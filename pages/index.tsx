@@ -1,7 +1,7 @@
 import type {GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
 import {useState} from 'react';
-import {HomeTable} from '../components/HomeTable';
+import {HomeTable} from '../components/table/HomeTable';
 import {ListBoxUI} from '../components/ui/ListBoxUI';
 import {continentData, costOfLivingData} from '../data/TableData';
 import {graphqlClient} from '../graphql/GraphqlClient';
@@ -27,12 +27,10 @@ const Home: NextPage<Props> = ({countryIso}) => {
   return (
     <>
       <Head>
-        <title>Best Surfing Spots</title>
-        <meta name="description" content="the best places to surf in the world" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="The best places to surf in the world" />
       </Head>
-      <main className="container">
-        <h1 className="text-center text-primary font-bold text-4xl mt-10">Best Surfing Spots</h1>
+      <main className="container my-10">
+        <h1 className="text-center text-primary font-bold text-4xl">Best Surfing Spots</h1>
         <p className="text-center text-gray-400 font-medium text-lg mt-2">the best places to surf in the world</p>
         <div className="flex justify-around my-6 flex-wrap">
           <ListBoxUI value={continentSelected} setValue={setContinentSelected} data={continentData} />

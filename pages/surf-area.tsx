@@ -1,6 +1,6 @@
 import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
-import {SurfAreaTable} from '../components/SurfAreaTable';
+import {SurfAreaTable} from '../components/table/SurfAreaTable';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {SURF_AREA_BY_ID} from '../graphql/query/SurfAreaQuery';
 import {SurfAreaById, SurfAreaByIdVariable} from '../graphql/types/SurfArea';
@@ -30,9 +30,7 @@ const SurfArea: NextPage<Props> = ({surfArea}) => {
   return (
     <>
       <Head>
-        <title>Best Surfing Spots in {surfArea.name}</title>
-        <meta name="description" content="the best places to surf in the world" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content={`Best Surfing Spots in ${surfArea.name}`} />
       </Head>
       <main className="container py-10">
         <h1 className="text-center text-primary font-bold text-4xl">Best Surfing Spots in {surfArea.name}</h1>

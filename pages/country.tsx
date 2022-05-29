@@ -37,11 +37,9 @@ const Country: NextPage<Props> = ({countryIso}) => {
   return (
     <>
       <Head>
-        <title>Best Surfing Spots in {countryIso.name}</title>
-        <meta name="description" content="the best places to surf in the world" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content={`Best Surfing Spots in ${countryIso.name}`} />
       </Head>
-      <main>
+      <main className="mb-10">
         <section className="relative w-full h-80">
           <Image
             src={getImageSrc(countryIso.image)}

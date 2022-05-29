@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import {useEffect, useMemo} from 'react';
 import {Column, useFilters, useSortBy, useTable} from 'react-table';
-import {continentData} from '../data/TableData';
-import {HomeCountryIso} from '../graphql/types/CountryIso';
-import {customSlugify} from '../utils/slugify';
+import {continentData} from '../../data/TableData';
+import {HomeCountryIso} from '../../graphql/types/CountryIso';
+import {customSlugify} from '../../utils/slugify';
 
 export const HomeTable = ({
   countryIso,
@@ -15,7 +15,7 @@ export const HomeTable = ({
   continentId?: number;
 }) => {
   const costOfLivingFilter = (rows: {original: {costofliving: string}}[], _: string[], costofliving: number) =>
-    rows.filter((row) => Number(row.original.costofliving.replace('$ ', '')) <= costofliving);
+    rows.filter((row) => Number(row.original.costofliving.replace('$', '')) <= costofliving);
 
   const continentFilter = (rows: {original: {continent: string}}[], _: string[], continentId: number) => {
     if (continentId === 0) return rows;
@@ -40,7 +40,7 @@ export const HomeTable = ({
           id,
           emoji,
           country: name,
-          costofliving: `$ ${cost_of_livings[0].single_person}`,
+          costofliving: `$${cost_of_livings[0].single_person}`,
           languages: language_country_isos[0].language.name,
           continent: continent.name
         };
