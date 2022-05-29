@@ -9,3 +9,8 @@ export interface SurfAreaById {
 export interface SurfAreaByIdVariable {
   surfAreaId: number;
 }
+
+export interface SurfAreaSiteMap {
+  name: string;
+  id: number;
+}

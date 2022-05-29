@@ -42,3 +42,9 @@ export interface CountryIsoById {
 export interface CountryIsoByIdVariable {
   countryId: number;
 }
+
+export interface CountryIsoSiteMap {
+  id: number;
+  name: string;
+  updated_at: string;
+}

@@ -70,3 +70,20 @@ export const COUNTRY_ISO_BY_ID = gql`
     }
   }
 `;
+
+export const COUNTRY_ISO_SITE_MAP = gql`
+  query CountryIsoSiteMap {
+    countryIso: country_iso(
+      where: {
+        emoji: {_is_null: false}
+        cost_of_livings: {single_person: {_is_null: false}}
+        language_country_isos: {language: {name: {_is_null: false}}}
+        continent: {name: {_is_null: false}}
+      }
+    ) {
+      id
+      name
+      updated_at
+    }
+  }
+`;
