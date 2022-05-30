@@ -48,6 +48,7 @@ export const HomeTable = ({
     [countryIso]
   );
 
+  // @ts-ignore
   const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, setFilter} = useTable(
     {columns, data},
     useFilters,
@@ -90,8 +91,10 @@ export const HomeTable = ({
                 return (
                   <td {...cell.getCellProps()} key={cellIndex} className="px-6 py-4 whitespace-nowrap">
                     {cellIndex === 0 ? (
+                      // @ts-ignore
                       <Link href={customSlugify(`/country/${row.original.id}-${cell.value}`)}>
                         <a className="stretched-link" title={cell.value}>
+                          {/* @ts-ignore */}
                           {row.original.emoji} {cell.render('Cell')}
                         </a>
                       </Link>
