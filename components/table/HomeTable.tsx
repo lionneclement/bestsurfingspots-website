@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import {useEffect, useLayoutEffect, useMemo} from 'react';
+import {useEffect, useMemo} from 'react';
 import {Column, useFilters, useSortBy, useTable} from 'react-table';
 import {continentData} from '../../data/TableData';
 import {HomeCountryIso} from '../../graphql/types/CountryIso';

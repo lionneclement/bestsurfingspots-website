@@ -4,7 +4,7 @@ import {useMemo} from 'react';
 import {Column, useSortBy, useTable} from 'react-table';
 import {SurfAreaById} from '../../graphql/types/SurfArea';
 
-export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
+export const SurfAreaTable = ({surfArea, openModal}: {surfArea: SurfAreaById; openModal: () => void}) => {
   const columns: Array<Column<{spot: string; star: number}>> = useMemo(
     () => [
       {Header: 'Spot', accessor: 'spot'},
@@ -53,7 +53,7 @@ export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
         {rows.map((row, rowIndex) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()} key={rowIndex} className="relative">
+            <tr {...row.getRowProps()} key={rowIndex} className="relative" onClick={openModal} role="button">
               {row.cells.map((cell, cellIndex) => {
                 return (
                   <td {...cell.getCellProps()} key={cellIndex} className="px-6 py-4 whitespace-nowrap">
