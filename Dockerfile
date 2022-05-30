@@ -1,0 +1,26 @@
+FROM node:16-alpine
+WORKDIR /app
+
+RUN apk update && apk add git
+
+ENV NODE_ENV=production
+ENV PORT=8080
+ARG URL
+ENV NEXT_PUBLIC_URL=${URL}
+ARG URI
+ENV NEXT_PUBLIC_URI=${URI}
+ARG ENVIRONMENT
+ENV NEXT_PUBLIC_ENVIRONMENT=${ENVIRONMENT}
+ARG GA_TRACKING_ID
+ENV NEXT_PUBLIC_GA_TRACKING_ID=${GA_TRACKING_ID}
+ARG HOTJAR_SITE_ID
+ENV NEXT_PUBLIC_HOTJAR_SITE_ID=${HOTJAR_SITE_ID}
+
+COPY package.json yarn.lock ./
+RUN yarn install --production=false --frozen-lockfile
+
+COPY . ./
+
+RUN yarn build
+
+CMD node server.js
