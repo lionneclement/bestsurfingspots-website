@@ -2,6 +2,7 @@ import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'ne
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useRouter} from 'next/router';
 import {StarRating} from '../components/Star';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {COUNTRY_ISO_BY_ID} from '../graphql/query/CountryIsoQuery';
@@ -32,12 +33,16 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 };
 
 const Country: NextPage<Props> = ({countryIso}) => {
+  const {pathname} = useRouter();
   const {beer, single_person, family, cigarettes, coffee, dinner} = countryIso.cost_of_livings[0];
 
   return (
     <>
       <Head>
         <meta name="description" content={`Best Surfing Spots in ${countryIso.name}`} />
+        <meta data-rh="true" property="og:description" content={`Best Surfing Spots in ${countryIso.name}`} />
+        <meta data-rh="true" property="og:url" content={pathname} />
+        <meta data-rh="true" property="og:image" content={getImageSrc(countryIso.image)} />
       </Head>
       <main className="mb-10">
         <section className="relative w-full h-80">

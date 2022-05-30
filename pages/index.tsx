@@ -1,7 +1,7 @@
 import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
-import {useEffect, useLayoutEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {HomeTable} from '../components/table/HomeTable';
 import {ListBoxUI} from '../components/ui/ListBoxUI';
 import {continentData, costOfLivingData} from '../data/TableData';
@@ -12,7 +12,7 @@ import {homeFilterPath, HomeFilterPathTypes, homePathName} from '../helpers/Home
 
 interface Props {
   countryIso: HomeCountryIso[];
-  homeFilter?: HomeFilterPathTypes;
+  homeFilter: HomeFilterPathTypes | null;
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<GetStaticPropsResult<Props>> => {
