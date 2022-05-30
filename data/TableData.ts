@@ -22,6 +22,6 @@ export interface CostOfLivingDataTypes {
 
 export const costOfLivingData: CostOfLivingDataTypes[] = [
   {name: 'Cost of living ?', costOfLiving: 10000, id: 0},
-  {name: '💰<$1K/mo', costOfLiving: 1000, id: 1, slugify: 'places-on-a-budget'},
-  {name: '💰<$2K/mo', costOfLiving: 2000, id: 2, slugify: 'cheap-places'}
+  {name: '💰<$1K/mo', costOfLiving: 1000, id: 1, slugify: 'countries-on-a-budget'},
+  {name: '💰<$2K/mo', costOfLiving: 2000, id: 2, slugify: 'cheap-countries'}
 ];

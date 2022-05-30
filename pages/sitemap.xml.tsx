@@ -9,6 +9,96 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
       changefreq: 'daily'
     },
     {
+      loc: `${process.env.NEXT_PUBLIC_URI}/north-america`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/countries-on-a-budget-in-north-america`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/cheap-countries-in-north-america`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/latin-america`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/countries-on-a-budget-in-latin-america`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/cheap-countries-in-latin-america`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/europe`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/countries-on-a-budget-in-europe`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/cheap-countries-in-europe`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/africa`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/countries-on-a-budget-in-africa`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/cheap-countries-in-africa`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/asia`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/countries-on-a-budget-in-asia`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/cheap-countries-in-asia`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/oceania`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/countries-on-a-budget-in-oceania`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
+      loc: `${process.env.NEXT_PUBLIC_URI}/cheap-countries-in-oceania`,
+      priority: 0.7,
+      changefreq: 'daily'
+    },
+    {
       loc: `${process.env.NEXT_PUBLIC_URI}/sitemaps/sitemap-countries.xml`,
       priority: 0.5,
       changefreq: 'daily'
