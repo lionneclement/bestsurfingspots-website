@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import {useEffect, useMemo} from 'react';
+import {useEffect, useLayoutEffect, useMemo} from 'react';
 import {Column, useFilters, useSortBy, useTable} from 'react-table';
 import {continentData} from '../../data/TableData';
 import {HomeCountryIso} from '../../graphql/types/CountryIso';
@@ -60,21 +60,26 @@ export const HomeTable = ({
   return (
     <table {...getTableProps()} className="divide-y divide-gray-200 mt-2 w-full">
       <thead className="bg-gray-50">
-        {headerGroups.map((headerGroup, groupsIndex) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={groupsIndex}>
-            {headerGroup.headers.map((column: any, columnIndex) => {
-              return (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  key={columnIndex}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {column.render('Header')}
-                  <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
-                </th>
-              );
-            })}
-          </tr>
-        ))}
+        {headerGroups.map((headerGroup) => {
+          const restHeaderGroup = headerGroup.getHeaderGroupProps();
+
+          return (
+            <tr {...restHeaderGroup} key={restHeaderGroup.key}>
+              {headerGroup.headers.map((column: any, columnIndex) => {
+                const restColumn = column.getHeaderProps(column.getSortByToggleProps());
+                return (
+                  <th
+                    key={restColumn.key}
+                    {...restColumn}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {column.render('Header')}
+                    <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                  </th>
+                );
+              })}
+            </tr>
+          );
+        })}
       </thead>
       <tbody {...getTableBodyProps()} className="bg-white divide-y divide-gray-200">
         {rows.map((row, rowIndex) => {

@@ -29,21 +29,25 @@ export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
   return (
     <table {...getTableProps()} className="divide-y divide-gray-200 w-full mt-8">
       <thead className="bg-gray-50">
-        {headerGroups.map((headerGroup, groupsIndex) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={groupsIndex}>
-            {headerGroup.headers.map((column: any, columnIndex) => {
-              return (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  key={columnIndex}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {column.render('Header')}
-                  <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
-                </th>
-              );
-            })}
-          </tr>
-        ))}
+        {headerGroups.map((headerGroup) => {
+          const restHeaderGroup = headerGroup.getHeaderGroupProps();
+          return (
+            <tr {...restHeaderGroup} key={restHeaderGroup.key}>
+              {headerGroup.headers.map((column: any) => {
+                const restColumn = column.getHeaderProps(column.getSortByToggleProps());
+                return (
+                  <th
+                    key={restColumn.key}
+                    {...restColumn}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {column.render('Header')}
+                    <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                  </th>
+                );
+              })}
+            </tr>
+          );
+        })}
       </thead>
       <tbody {...getTableBodyProps()} className="bg-white divide-y divide-gray-200">
         {rows.map((row, rowIndex) => {

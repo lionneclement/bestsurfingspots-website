@@ -1,28 +1,43 @@
-import type {GetStaticPropsResult, NextPage} from 'next';
+import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
-import {useState} from 'react';
+import {useRouter} from 'next/router';
+import {useEffect, useLayoutEffect, useState} from 'react';
 import {HomeTable} from '../components/table/HomeTable';
 import {ListBoxUI} from '../components/ui/ListBoxUI';
 import {continentData, costOfLivingData} from '../data/TableData';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {HOME_COUNTRY_ISO} from '../graphql/query/CountryIsoQuery';
 import {HomeCountryIso} from '../graphql/types/CountryIso';
+import {homeFilterPath, HomeFilterPathTypes, homePathName} from '../helpers/HomeFilterPath';
 
 interface Props {
   countryIso: HomeCountryIso[];
+  homeFilter?: HomeFilterPathTypes;
 }
 
-export const getServerSideProps = async (): Promise<GetStaticPropsResult<Props>> => {
+export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<GetStaticPropsResult<Props>> => {
+  const {slug} = context.query;
+
+  const homeFilter = homeFilterPath(slug);
+
+  if (slug && !homeFilter) return {notFound: true};
+
   const countryIsoResult = await graphqlClient.query<{countryIso: HomeCountryIso[]}>({
     query: HOME_COUNTRY_ISO
   });
 
-  return {props: {countryIso: countryIsoResult.data.countryIso}};
+  return {props: {countryIso: countryIsoResult.data.countryIso, homeFilter}};
 };
 
-const Home: NextPage<Props> = ({countryIso}) => {
-  const [continentSelected, setContinentSelected] = useState(continentData[0]);
-  const [costOfLivingSelected, setCostOfLivingSelected] = useState(costOfLivingData[0]);
+const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
+  const {push} = useRouter();
+  const [continentSelected, setContinentSelected] = useState(homeFilter?.continent || continentData[0]);
+  const [costOfLivingSelected, setCostOfLivingSelected] = useState(homeFilter?.costOfLiving || costOfLivingData[0]);
+
+  useEffect(() => {
+    const pathname = homePathName({continentSelected, costOfLivingSelected});
+    push({pathname}, undefined, {shallow: true});
+  }, [continentSelected, costOfLivingSelected]);
 
   return (
     <>
