@@ -34,6 +34,7 @@ export const ListBoxUI = <TType,>({
                   value={data}>
                   {({selected}) => (
                     <>
+                      {/* @ts-ignore */}
                       <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>{data.name}</span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-white">

@@ -4,11 +4,6 @@ import {getServerSideSitemap, ISitemapField} from 'next-sitemap';
 export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<GetStaticPropsResult<{}>> => {
   const fields: ISitemapField[] = [
     {
-      loc: `${process.env.NEXT_PUBLIC_URI}/`,
-      priority: 0.8,
-      changefreq: 'daily'
-    },
-    {
       loc: `${process.env.NEXT_PUBLIC_URI}/north-america`,
       priority: 0.7,
       changefreq: 'daily'
@@ -110,7 +105,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
     }
   ];
 
-  console.log({fields});
   return getServerSideSitemap(context, fields);
 };
 
