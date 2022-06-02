@@ -34,7 +34,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 };
 
 const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
-  const {push} = useRouter();
+  const {push, pathname} = useRouter();
   const [allCountry, setAllCountry] = useState<HomeCountryIso[]>(countryIso);
   const [continentSelected, setContinentSelected] = useState<ContinentDataTypes>(
     homeFilter?.continent || continentData[0]
@@ -64,11 +64,29 @@ const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
     setAllCountry(continentFilter());
   }, [continentSelected]);
 
+  const headTitle = 'The best places to surf in the world';
+  const headDescription = `Discover the best surfing spots in the world. ${allCountry
+    .map(({name}, index) => `#${index + 1} ${name}`)
+    .join(', ')}`;
+  const image = 'https://storage.googleapis.com/bestsurfingspots/home.jpg';
+
   return useMemo(() => {
     return (
       <>
         <Head>
-          <meta name="description" content="The best places to surf in the world" />
+          {/* Title */}
+          <title>{headTitle}</title>
+          <meta data-rh="true" property="og:title" content={headTitle} />
+          {/* Description */}
+          <meta name="description" content={headDescription} />
+          <meta data-rh="true" property="og:description" content={headDescription} />
+          {/* Twitter */}
+          <meta name="twitter:title" content={headTitle} />
+          <meta name="twitter:card" content={getImageSrc(image)} />
+          <meta name="twitter:description" content={headDescription} />
+          {/* og */}
+          <meta data-rh="true" property="og:url" content={pathname} />
+          <meta data-rh="true" property="og:image" content={getImageSrc(image)} />
         </Head>
         <main className="container my-10">
           <h1 className="text-center text-primary font-bold text-4xl">Best Surfing Spots</h1>

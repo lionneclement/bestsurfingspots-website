@@ -33,14 +33,30 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 };
 
 const Country: NextPage<Props> = ({countryIso}) => {
+  const headTitle = `Best surfing spots in ${countryIso.name} - BestSurfingSpots`;
+  const headDescription = `Discover the best surfing spots in ${countryIso.name}. ${countryIso.countries
+    .map(
+      ({name, surf_areas}, index) =>
+        `#${index + 1} ${name}: ${surf_areas.map((surfArea) => `${surfArea.name}`).join(', ')}`
+    )
+    .join('. ')}`;
   const {pathname} = useRouter();
   const {beer, single_person, family, cigarettes, coffee, dinner} = countryIso.cost_of_livings[0];
 
   return (
     <>
       <Head>
-        <meta name="description" content={`Best Surfing Spots in ${countryIso.name}`} />
-        <meta data-rh="true" property="og:description" content={`Best Surfing Spots in ${countryIso.name}`} />
+        {/* Title */}
+        <title>{headTitle}</title>
+        <meta data-rh="true" property="og:title" content={headTitle} />
+        {/* Description */}
+        <meta name="description" content={headDescription} />
+        <meta data-rh="true" property="og:description" content={headDescription} />
+        {/* Twitter */}
+        <meta name="twitter:title" content={headTitle} />
+        <meta name="twitter:card" content={getImageSrc(countryIso.image)} />
+        <meta name="twitter:description" content={headDescription} />
+        {/* og */}
         <meta data-rh="true" property="og:url" content={pathname} />
         <meta data-rh="true" property="og:image" content={getImageSrc(countryIso.image)} />
       </Head>
