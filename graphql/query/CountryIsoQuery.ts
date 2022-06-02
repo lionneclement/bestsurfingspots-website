@@ -13,6 +13,7 @@ export const HOME_COUNTRY_ISO = gql`
       emoji
       id
       name
+      image
       cost_of_livings {
         single_person
       }

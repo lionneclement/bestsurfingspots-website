@@ -5,7 +5,7 @@ import {LINKEDIN_LINK} from '../../data/Link';
 const NavBar: FunctionComponent = () => {
   return (
     <nav className="bg-white py-3 px-6 drop-shadow-md">
-      <div className="container flex flex-wrap justify-between items-center text-primary">
+      <div className="flex flex-wrap justify-between items-center text-primary">
         <Link href="/">
           <a className="flex items-center">
             <span className="self-center text-xl font-semibold whitespace-nowrap">Best Surfing Spots</span>

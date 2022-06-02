@@ -2,6 +2,7 @@ export interface HomeCountryIso {
   id: number;
   emoji: string;
   name: string;
+  image: string;
   cost_of_livings: {single_person: number}[];
   language_country_isos: {language: {name: string}}[];
   continent: {name: string; id: number};
