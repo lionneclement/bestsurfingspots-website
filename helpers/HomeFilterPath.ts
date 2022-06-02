@@ -33,7 +33,7 @@ export const homeFilterPath = (slug: string[] | string | undefined): HomeFilterP
   }
   if (costOfLiving.length > 0) {
     if (slug === costOfLiving[0].slugify) {
-      return {continent: costOfLiving[0]};
+      return {costOfLiving: costOfLiving[0]};
     }
     return null;
   }
