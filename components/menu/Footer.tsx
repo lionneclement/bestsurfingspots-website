@@ -5,7 +5,7 @@ import {LINKEDIN_LINK} from '../../data/Link';
 const Footer: FunctionComponent = () => {
   return (
     <footer className="p-6 bg-white text-primary shadow-2xl">
-      <div className="container md:flex md:items-center md:justify-between">
+      <div className="md:flex md:items-center md:justify-between">
         <span className="text-sm sm:text-center">
           © 2022{' '}
           <Link href="/">
