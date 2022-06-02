@@ -76,17 +76,18 @@ const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
         <Head>
           {/* Title */}
           <title>{headTitle}</title>
-          <meta data-rh="true" property="og:title" content={headTitle} />
+          <meta data-rh property="og:title" content={headTitle} />
           {/* Description */}
-          <meta name="description" content={headDescription} />
-          <meta data-rh="true" property="og:description" content={headDescription} />
+          <meta data-rh name="description" content={headDescription} />
+          <meta data-rh property="og:description" content={headDescription} />
           {/* Twitter */}
-          <meta name="twitter:title" content={headTitle} />
-          <meta name="twitter:card" content={getImageSrc(image)} />
-          <meta name="twitter:description" content={headDescription} />
+          <meta data-rh name="twitter:title" content={headTitle} />
+          <meta data-rh name="twitter:card" content="summary_large_image" />
+          <meta data-rh name="twitter:image:src" content={image} />
+          <meta data-rh name="twitter:description" content={headDescription} />
           {/* og */}
-          <meta data-rh="true" property="og:url" content={pathname} />
-          <meta data-rh="true" property="og:image" content={getImageSrc(image)} />
+          <meta data-rh property="og:url" content={pathname} />
+          <meta data-rh property="og:image" content={image} />
         </Head>
         <main className="container my-10">
           <h1 className="text-center text-primary font-bold text-4xl">Best Surfing Spots</h1>
