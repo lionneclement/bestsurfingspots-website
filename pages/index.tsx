@@ -1,14 +1,18 @@
 import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
-import {HomeTable} from '../components/table/HomeTable';
 import {ListBoxUI} from '../components/ui/ListBoxUI';
 import {continentData, costOfLivingData} from '../data/TableData';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {HOME_COUNTRY_ISO} from '../graphql/query/CountryIsoQuery';
 import {HomeCountryIso} from '../graphql/types/CountryIso';
 import {homeFilterPath, HomeFilterPathTypes, homePathName} from '../helpers/HomeFilterPath';
+import {getImageSrc} from '../helpers/Image';
+import {capitalize} from '../helpers/String';
+import {customSlugify} from '../utils/slugify';
 
 interface Props {
   countryIso: HomeCountryIso[];
@@ -51,11 +55,32 @@ const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
           <ListBoxUI value={continentSelected} setValue={setContinentSelected} data={continentData} />
           <ListBoxUI value={costOfLivingSelected} setValue={setCostOfLivingSelected} data={costOfLivingData} />
         </div>
-        <HomeTable
-          countryIso={countryIso}
-          costOfLiving={costOfLivingSelected.costOfLiving}
-          continentId={continentSelected.id}
-        />
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {countryIso.map(({emoji, name, cost_of_livings, language_country_isos, continent, id, image}, index) => {
+            return (
+              <div key={index} className="relative h-40 rounded-lg overflow-hidden">
+                <Image src={getImageSrc(image)} className="object-cover" alt={name} layout="fill" />
+                <div className="bg-[#00000080] w-full h-full absolute font-bold text-white">
+                  <span className="text-right absolute top-0 right-0 p-2">
+                    ${cost_of_livings[0].single_person} / month
+                  </span>
+                  <Link href={customSlugify(`/country/${id}-${name}`)}>
+                    <a className="stretched-link " title={name}>
+                      <h2 className="text-center absolute top-1/2 left-0 transform -translate-y-1/2 w-full text-2xl">
+                        {`${emoji} ${name}`}
+                      </h2>
+                    </a>
+                  </Link>
+                  <span className="text-right absolute bottom-0 left-0 p-2">
+                    🗣️ {capitalize(language_country_isos[0].language.name)}
+                  </span>
+                  <span className="text-right absolute bottom-0 right-0 p-2">{continent.name}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </main>
     </>
   );
