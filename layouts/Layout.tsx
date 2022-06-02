@@ -13,7 +13,7 @@ const Layout: FunctionComponent<Props> = ({children}: Props) => (
       <link rel="icon" type="image/png" href="/favicon.png" />
       <link rel="shortcut icon" href="/favicon.png" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta data-rh="true" property="og:site_name" content="Best Surfing Spots" />
+      <meta data-rh="true" property="og:site_name" content="BestSurfingSpots" />
     </Head>
     {children}
   </>
