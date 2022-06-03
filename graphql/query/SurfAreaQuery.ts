@@ -5,6 +5,7 @@ export const SURF_AREA_BY_ID = gql`
     surfArea: surf_areas_by_pk(id: $surfAreaId) {
       name
       surf_spots {
+        id
         name
         solid_rating
       }

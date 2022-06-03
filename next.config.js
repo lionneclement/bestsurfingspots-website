@@ -16,6 +16,10 @@ const nextConfig = {
           destination: '/surf-area?id=:id&slug=:slug'
         },
         {
+          source: '/surf-spot/:id(\\d{1,})-:slug',
+          destination: '/surf-spot?id=:id&slug=:slug'
+        },
+        {
           source: '/:slug',
           destination: '/?slug=:slug'
         }

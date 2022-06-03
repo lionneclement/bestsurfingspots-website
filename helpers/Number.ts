@@ -10,3 +10,7 @@ export const populationFormatter = (population: number): string => {
   }
   return population.toString();
 };
+
+export const round5 = (x: number) => {
+  return Math.ceil(x / 5) * 5;
+};
