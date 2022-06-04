@@ -114,7 +114,7 @@ const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
             {allCountry.map(({emoji, name, cost_of_livings, language_country_isos, continent, id, image}, index) => {
               return (
                 <div key={index} className="relative h-40 rounded-lg overflow-hidden">
-                  <Image src={getImageSrc(image)} className="object-cover" alt={name} layout="fill" />
+                  <Image src={getImageSrc(image)} className="object-cover" alt={name} layout="fill" priority />
                   <div className="bg-[#00000080] w-full h-full absolute font-bold text-white">
                     <span className="text-right absolute top-0 right-0 p-2">
                       ${cost_of_livings[0].single_person} / month
