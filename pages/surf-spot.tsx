@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import {StarRating} from '../components/Star';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {SURF_SPOT_BY_ID} from '../graphql/query/SurfSpotQuery';
@@ -30,16 +31,18 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
   if (slug !== customSlugify(data.surfSpot.name)) return {notFound: true};
 
   const date = new Date();
-  const nowUtc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-  const inOneWeekUtc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 7);
+  const nowUtc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) / 1000;
+  const inOneWeekUtc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 6) / 1000;
 
-  const forecast: {data: MagicSeaWeedForecast[]} = await axios.get(
-    `http://magicseaweed.com/api/mdkey/forecast/?spot_id=${data.surfSpot.magicseaweed_id}&fields=localTimestamp,timestamp,fadedRating,solidRating,threeHourTimeText,swell.unit,swell.height,swell.minBreakingHeight,swell.maxBreakingHeight,swell.period,swell.components.primary.trueDirection,wind.speed,wind.compassDirection,wind.trueDirection,wind.rating,condition.temperature,condition.weather&units=us`
-  );
-
-  const tide: {data: MagicSeaWeedTide[]} = await axios.get(
-    `https://magicseaweed.com/api/mdkey/tide/?spot_id=${data.surfSpot.magicseaweed_id}&start=${nowUtc}&end=${inOneWeekUtc}&units=us`
-  );
+  const [forecast, tide]: [forecast: {data: MagicSeaWeedForecast[]}, tide: {data: MagicSeaWeedTide[]}] =
+    await Promise.all([
+      axios.get(
+        `http://magicseaweed.com/api/mdkey/forecast/?spot_id=${data.surfSpot.magicseaweed_id}&fields=localTimestamp,timestamp,fadedRating,solidRating,threeHourTimeText,swell.unit,swell.height,swell.minBreakingHeight,swell.maxBreakingHeight,swell.period,swell.components.primary.trueDirection,wind.speed,wind.compassDirection,wind.trueDirection,wind.rating,condition.temperature,condition.weather&units=us`
+      ),
+      axios.get(
+        `https://magicseaweed.com/api/mdkey/tide/?spot_id=${data.surfSpot.magicseaweed_id}&start=${nowUtc}&end=${inOneWeekUtc}&units=us`
+      )
+    ]);
 
   return {props: {surfSpot: data.surfSpot, forecast: forecast.data, tide: tide.data}};
 };
@@ -66,66 +69,155 @@ const SurfSpot: NextPage<Props> = ({surfSpot, forecast, tide}) => {
                   {date.toLocaleDateString('en-us', {month: '2-digit', day: '2-digit'})}
                 </small>
               </h3>
-              {forecast.map(
-                (
-                  {solidRating, threeHourTimeText, swell, wind, condition},
-                  index
-                ) => {
-                  const swellDirectionClassName = `msw-swa-${round5(swell.components.primary.trueDirection)}`;
-                  const windDirectionClassName = `msw-ssa-${round5(wind.trueDirection)}`;
-                  const weatherClassName = `msw-sw-${condition.weather}`;
-                  return (
-                    <div key={index} className="flex mx-1 justify-between">
-                      <small className="w-10 text-center self-center">{threeHourTimeText}</small>
-                      <div className="w-14 bg-primary text-white text-center flex items-center justify-center">
-                        <span>
-                          {swell.minBreakingHeight}-{swell.maxBreakingHeight}
-                          <small>{swell.unit}</small>
-                        </span>
+              {forecast.map(({solidRating, threeHourTimeText, swell, wind, condition}, index) => {
+                const swellDirectionClassName = `msw-swa-${round5(swell.components.primary.trueDirection)}`;
+                const windDirectionClassName = `msw-ssa-${round5(wind.trueDirection)}`;
+                const weatherClassName = `msw-sw-${condition.weather}`;
+                return (
+                  <div key={index} className="flex mx-1 justify-between">
+                    <small className="w-10 text-center self-center">{threeHourTimeText}</small>
+                    <div className="w-14 bg-primary text-white text-center flex items-center justify-center">
+                      <span>
+                        {swell.minBreakingHeight}-{swell.maxBreakingHeight}
+                        <small>{swell.unit}</small>
+                      </span>
+                    </div>
+                    <div className="flex">
+                      <div className="w-26 text-center self-center mr-2">
+                        <div className="flex justify-between">
+                          <span>
+                            {swell.height}
+                            {swell.unit}
+                          </span>
+                          <span>{swell.period}s</span>
+                        </div>
+                        {StarRating({value: solidRating})}
                       </div>
-                      <div className="flex">
-                        <div className="w-26 text-center self-center mr-2">
-                          <div className="flex justify-between">
-                            <span>
-                              {swell.height}
-                              {swell.unit}
-                            </span>
-                            <span>{swell.period}s</span>
-                          </div>
-                          {StarRating({value: solidRating})}
-                        </div>
-                        <div className="w-10 text-center self-center justify-center">
-                          <div
-                            className={`bg-[url('http://im-1.msw.ms/md/static/sa-sprite.png')] ${swellDirectionClassName}`}
-                          />
-                          <small>{Math.round(swell.components.primary.trueDirection)}°</small>
-                        </div>
-                      </div>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 mr-2">
-                          <strong className="text-lg">{wind.speed}</strong>
-                          <small className="text-xs">mph</small>
-                        </div>
-                        <div className="text-center self-center w-10">
-                          <div
-                            className={`bg-[url('http://im-1.msw.ms/md/static/wa-sprite.png')] ${windDirectionClassName}`}
-                          />
-                          <small className="text-xs">{wind.compassDirection}</small>
-                        </div>
-                      </div>
-                      <div className=" w-16 hidden sm:flex items-center justify-center">
+                      <div className="w-10 text-center self-center justify-center">
                         <div
-                          className={`bg-[url('https://d12ke8i0d04z83.cloudfront.net/md/themes/msw_bs3/dist/assets/img/sprites/213944df.weather-icons.svg')] ${weatherClassName}`}
+                          className={`bg-[url('http://im-1.msw.ms/md/static/sa-sprite.png')] ${swellDirectionClassName}`}
                         />
-                        <span>
-                          {condition.temperature}
-                          <small className="text-xs">°f</small>
-                        </span>
+                        <small>{Math.round(swell.components.primary.trueDirection)}°</small>
                       </div>
                     </div>
-                  );
-                }
-              )}
+                    <div className="flex">
+                      <div className="flex items-center justify-center w-10 mr-2">
+                        <strong className="text-lg">{wind.speed}</strong>
+                        <small className="text-xs">mph</small>
+                      </div>
+                      <div className="text-center self-center w-10">
+                        <div
+                          className={`bg-[url('http://im-1.msw.ms/md/static/wa-sprite.png')] ${windDirectionClassName}`}
+                        />
+                        <small className="text-xs">{wind.compassDirection}</small>
+                      </div>
+                    </div>
+                    <div className=" w-16 hidden sm:flex items-center justify-center">
+                      <div
+                        className={`bg-[url('https://d12ke8i0d04z83.cloudfront.net/md/themes/msw_bs3/dist/assets/img/sprites/213944df.weather-icons.svg')] ${weatherClassName}`}
+                      />
+                      <span>
+                        {condition.temperature}
+                        <small className="text-xs">°f</small>
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+              <div className='mt-6 flex flex-col sm:w-1/2'>
+                <Image
+                  className="inline-block"
+                  src={tide[index].images.full}
+                  alt={`Tide and daylight times for ${surfSpot.name}, ${surfSpot.surf_area.name} ${date}`}
+                  height={87}
+                  width={532}
+                />
+                <Image
+                  src="https://d12ke8i0d04z83.cloudfront.net/md/themes/msw_bs3/dist/assets/img/fb709464.tide-scale.png"
+                  alt={`Tide and daylight times for `}
+                  height={25}
+                  width={532}
+                />
+                <div className="flex">
+                  <table>
+                    <tbody>
+                      {tide[index].tide.map(({shift, state, timestamp}, index) => {
+                        const date = new Date(timestamp * 1000);
+                        return (
+                          <tr key={index}>
+                            <td>
+                              <strong>{state}</strong>
+                            </td>
+                            <td>
+                              {date.toLocaleTimeString('en-US', {
+                                timeZone: 'UTC',
+                                hour: 'numeric',
+                                minute: '2-digit'
+                              })}
+                            </td>
+                            <td>
+                              {shift}
+                              {tide[index].unit}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <strong>First Light</strong>
+                        </td>
+                        <td>
+                          {new Date(tide[index].sunriseTwilight * 1000).toLocaleTimeString('en-US', {
+                            timeZone: 'UTC',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                          })}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Sunrise</strong>
+                        </td>
+                        <td>
+                          {new Date(tide[index].sunrise * 1000).toLocaleTimeString('en-US', {
+                            timeZone: 'UTC',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                          })}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Sunset</strong>
+                        </td>
+                        <td>
+                          {new Date(tide[index].sunset * 1000).toLocaleTimeString('en-US', {
+                            timeZone: 'UTC',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                          })}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Last Light</strong>
+                        </td>
+                        <td>
+                          {new Date(tide[index].sunsetTwilight * 1000).toLocaleTimeString('en-US', {
+                            timeZone: 'UTC',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                          })}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           );
         })}

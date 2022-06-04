@@ -58,7 +58,6 @@ export const SurfAreaTable = ({surfArea, openModal}: {surfArea: SurfAreaById; op
           return (
             <tr {...row.getRowProps()} key={rowIndex} className="relative" role="button">
               {row.cells.map((cell, cellIndex) => {
-                console.log('cell: ', cell);
                 return (
                   <td {...cell.getCellProps()} key={cellIndex} className="px-6 py-4 whitespace-nowrap">
                     {cell.column.id === 'star' ? (
