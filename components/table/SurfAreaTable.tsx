@@ -6,7 +6,7 @@ import {Column, useSortBy, useTable} from 'react-table';
 import {SurfAreaById} from '../../graphql/types/SurfArea';
 import {customSlugify} from '../../utils/slugify';
 
-export const SurfAreaTable = ({surfArea, openModal}: {surfArea: SurfAreaById; openModal: () => void}) => {
+export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
   const columns: Array<Column<{spot: string; star: number}>> = useMemo(
     () => [
       {Header: 'Spot', accessor: 'spot'},
