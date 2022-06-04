@@ -19,8 +19,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 
   const countryIsoResult = await graphqlClient.query<{surfArea: SurfAreaById}, SurfAreaByIdVariable>({
     query: SURF_AREA_BY_ID,
-    variables: {surfAreaId: Number(id)},
-    fetchPolicy: 'no-cache'
+    variables: {surfAreaId: Number(id)}
   });
   const surfArea = countryIsoResult.data.surfArea;
 
