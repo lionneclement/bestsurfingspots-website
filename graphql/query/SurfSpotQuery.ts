@@ -3,6 +3,10 @@ import {gql} from '@apollo/client';
 export const SURF_SPOT_BY_ID = gql`
   query SurfSpotById($surfSpotId: Int!) {
     surfSpot: surf_spots_by_pk(id: $surfSpotId) {
+      surf_area {
+        name
+      }
+      magicseaweed_id
       name
       timezone
       forecasts(where: {three_hour_time_text: {_in: ["6am", "Noon", "6pm"]}}, order_by: {timestamp: asc}) {

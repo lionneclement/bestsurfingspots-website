@@ -1,7 +1,9 @@
 export interface SurfSpotById {
+  surf_area: {name: string};
   name: string;
   timezone: string;
   forecasts: Forecast[];
+  magicseaweed_id: number;
 }
 
 export interface Forecast {
