@@ -71,7 +71,10 @@ export const SurfAreaTable = ({surfArea, openModal}: {surfArea: SurfAreaById; op
                         )}
                       </div>
                     ) : (
-                      <Link href={customSlugify(`/surf-spot/${cell.row.original.id}-${cell.row.original.spot}`)}>
+                      <Link
+                        href={customSlugify(
+                          `/surf-spot/${cell.row.original.id}-${cell.row.original.spot.replace('/', '')}`
+                        )}>
                         <a className="stretched-link" title={cell.value.spot}>
                           <h2>{cell.render('Cell')}</h2>
                         </a>

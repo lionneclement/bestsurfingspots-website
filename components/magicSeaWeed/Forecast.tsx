@@ -10,7 +10,9 @@ interface Props {
 const Forecast: FunctionComponent<Props> = ({forecast}) => {
   const {solidRating, threeHourTimeText, swell, wind, condition} = forecast;
 
-  const swellDirectionClassName = `msw-swa-${round5(swell.components.primary.trueDirection)}`;
+  const swellDirectionClassName = swell.components?.primary
+    ? `msw-swa-${round5(swell.components.primary.trueDirection)}`
+    : '';
   const windDirectionClassName = `msw-ssa-${round5(wind.trueDirection)}`;
   const weatherClassName = `msw-sw-${condition.weather}`;
 
@@ -35,8 +37,12 @@ const Forecast: FunctionComponent<Props> = ({forecast}) => {
           {StarRating({value: solidRating})}
         </div>
         <div className="w-10 text-center self-center justify-center">
-          <div className={`bg-[url('http://im-1.msw.ms/md/static/sa-sprite.png')] ${swellDirectionClassName}`} />
-          <small>{Math.round(swell.components.primary.trueDirection)}°</small>
+          {swell.components?.primary && (
+            <>
+              <div className={`bg-[url('http://im-1.msw.ms/md/static/sa-sprite.png')] ${swellDirectionClassName}`} />
+              <small>{Math.round(swell.components.primary.trueDirection)}°</small>{' '}
+            </>
+          )}
         </div>
       </div>
       <div className="flex">

@@ -27,7 +27,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
     variables: {surfSpotId: Number(id)}
   });
 
-  if (slug !== customSlugify(data.surfSpot.name)) return {notFound: true};
+  if (slug !== customSlugify(data.surfSpot.name.replace('/', ''))) return {notFound: true};
 
   const date = new Date();
   const nowUtc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) / 1000;
@@ -69,7 +69,7 @@ const SurfSpot: NextPage<Props> = ({surfSpot, forecast, tide}) => {
                 </small>
               </h2>
               <div className="md:flex justify-between">
-                <div className='w-full mr-10'>
+                <div className="w-full mr-10">
                   {forecast.map((spotForecast, index) => {
                     return <Forecast key={index} forecast={spotForecast} />;
                   })}

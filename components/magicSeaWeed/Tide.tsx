@@ -13,7 +13,7 @@ interface Props {
 const Tide: FunctionComponent<Props> = ({tide, index, surfSpot, date}) => {
   return (
     <div className="flex flex-col">
-      <h3 className='mb-2 md:mt-0 mt-4 ml-3 sm:ml-0'>Tide and daylight times for {surfSpot.name}, {surfSpot.surf_area.name}</h3>
+      <h3 className='mb-2 md:mt-0 mt-4 ml-3 sm:ml-0'>Tide and daylight times</h3>
       <Image
         src={tide[index].images.full}
         alt={`Tide and daylight times for ${surfSpot.name}, ${surfSpot.surf_area.name} ${date}`}
