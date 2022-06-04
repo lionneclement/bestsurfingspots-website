@@ -48,21 +48,25 @@ const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
     push({pathname}, undefined, {shallow: true});
   }, [continentSelected, costOfLivingSelected]);
 
-  useEffect(() => {
-    setAllCountry(
-      countryIso.filter(({cost_of_livings}) => cost_of_livings[0].single_person <= costOfLivingSelected.costOfLiving)
-    );
-  }, [costOfLivingSelected]);
-
-  const continentFilter = () => {
-    if (continentSelected.id === 0) return countryIso;
+  const continentFilter = (newAllCountry: HomeCountryIso[]) => {
+    if (continentSelected.id === 0) return newAllCountry;
     const continentName = continentData.filter(({id}) => id === continentSelected.id)[0].name;
-    return countryIso.filter(({continent}) => continentName.includes(continent.name));
+    return newAllCountry.filter(({continent}) => continentName.includes(continent.name));
   };
 
   useEffect(() => {
-    setAllCountry(continentFilter());
-  }, [continentSelected]);
+    let newAllCountry = countryIso;
+    if (continentSelected.id > 0) {
+      newAllCountry = continentFilter(newAllCountry);
+    }
+    if (costOfLivingSelected.id > 0) {
+      newAllCountry = newAllCountry.filter(
+        ({cost_of_livings}) => cost_of_livings[0].single_person <= costOfLivingSelected.costOfLiving
+      );
+    }
+
+    setAllCountry(newAllCountry);
+  }, [continentSelected, costOfLivingSelected]);
 
   const headTitle = 'The best places to surf in the world';
   const headDescription = `Discover the best surfing spots in the world. ${allCountry
