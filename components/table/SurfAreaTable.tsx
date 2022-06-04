@@ -73,6 +73,7 @@ export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
                     ) : (
                       <Link
                         href={customSlugify(
+                          // @ts-ignore
                           `/surf-spot/${cell.row.original.id}-${cell.row.original.spot.replace('/', '')}`
                         )}>
                         <a className="stretched-link" title={cell.value.spot}>
