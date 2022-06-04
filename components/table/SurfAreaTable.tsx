@@ -1,12 +1,14 @@
 import {StarIcon as StartIconOutline} from '@heroicons/react/outline';
 import {StarIcon as StartIconSolid} from '@heroicons/react/solid';
 import Link from 'next/link';
+import {useRouter} from 'next/router';
 import {useMemo} from 'react';
 import {Column, useSortBy, useTable} from 'react-table';
 import {SurfAreaById} from '../../graphql/types/SurfArea';
 import {customSlugify} from '../../utils/slugify';
 
 export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
+  const {push} = useRouter();
   const columns: Array<Column<{spot: string; star: number}>> = useMemo(
     () => [
       {Header: 'Spot', accessor: 'spot'},
@@ -56,7 +58,18 @@ export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
         {rows.map((row, rowIndex) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()} key={rowIndex} className="relative" role="button">
+            <tr
+              {...row.getRowProps()}
+              key={rowIndex}
+              role="button"
+              onClick={() =>
+                push(
+                  customSlugify(
+                    // @ts-ignore
+                    `/surf-spot/${row.cells[0].row.original.id}-${row.cells[0].row.original.spot.replace('/', '')}`
+                  )
+                )
+              }>
               {row.cells.map((cell, cellIndex) => {
                 return (
                   <td {...cell.getCellProps()} key={cellIndex} className="px-6 py-4 whitespace-nowrap">
@@ -76,7 +89,7 @@ export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
                           // @ts-ignore
                           `/surf-spot/${cell.row.original.id}-${cell.row.original.spot.replace('/', '')}`
                         )}>
-                        <a className="stretched-link" title={cell.value.spot}>
+                        <a title={cell.value.spot}>
                           <h2>{cell.render('Cell')}</h2>
                         </a>
                       </Link>
