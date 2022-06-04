@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const HOME_COUNTRY_ISO = gql`
   query HomeCountryIso {
     countryIso: country_iso(
+      order_by: {rank: asc}
       where: {
         emoji: {_is_null: false}
         cost_of_livings: {single_person: {_is_null: false}}
