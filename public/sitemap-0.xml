@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>http://localhost:3000</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-05-30T23:21:03.192Z</lastmod></url>
-<url><loc>http://localhost:3000/country</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-05-30T23:21:03.192Z</lastmod></url>
-<url><loc>http://localhost:3000/sitemaps/sitemap-countries.xml</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-05-30T23:21:03.192Z</lastmod></url>
-<url><loc>http://localhost:3000/sitemaps/sitemap-home.xml</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-05-30T23:21:03.192Z</lastmod></url>
-<url><loc>http://localhost:3000/sitemaps/sitemap-surf-area.xml</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-05-30T23:21:03.192Z</lastmod></url>
-<url><loc>http://localhost:3000/surf-area</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-05-30T23:21:03.192Z</lastmod></url>
+<url><loc>http://localhost:3000</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-06-04T14:27:47.659Z</lastmod></url>
+<url><loc>http://localhost:3000/country</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-06-04T14:27:47.659Z</lastmod></url>
+<url><loc>http://localhost:3000/sitemaps/sitemap-countries.xml</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-06-04T14:27:47.659Z</lastmod></url>
+<url><loc>http://localhost:3000/sitemaps/sitemap-home.xml</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-06-04T14:27:47.659Z</lastmod></url>
+<url><loc>http://localhost:3000/sitemaps/sitemap-surf-area.xml</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-06-04T14:27:47.659Z</lastmod></url>
+<url><loc>http://localhost:3000/sitemaps/sitemap-surf-spot.xml</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-06-04T14:27:47.659Z</lastmod></url>
+<url><loc>http://localhost:3000/surf-area</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-06-04T14:27:47.659Z</lastmod></url>
+<url><loc>http://localhost:3000/surf-spot</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-06-04T14:27:47.659Z</lastmod></url>
 </urlset>

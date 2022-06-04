@@ -1,6 +1,7 @@
 export interface SurfAreaById {
   name: string;
   surf_spots?: {
+    id: number;
     name: string;
     solid_rating?: null | number;
   }[];

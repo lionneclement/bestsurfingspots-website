@@ -1,10 +1,12 @@
 import {StarIcon as StartIconOutline} from '@heroicons/react/outline';
 import {StarIcon as StartIconSolid} from '@heroicons/react/solid';
+import Link from 'next/link';
 import {useMemo} from 'react';
 import {Column, useSortBy, useTable} from 'react-table';
 import {SurfAreaById} from '../../graphql/types/SurfArea';
+import {customSlugify} from '../../utils/slugify';
 
-export const SurfAreaTable = ({surfArea, openModal}: {surfArea: SurfAreaById; openModal: () => void}) => {
+export const SurfAreaTable = ({surfArea}: {surfArea: SurfAreaById}) => {
   const columns: Array<Column<{spot: string; star: number}>> = useMemo(
     () => [
       {Header: 'Spot', accessor: 'spot'},
@@ -15,10 +17,11 @@ export const SurfAreaTable = ({surfArea, openModal}: {surfArea: SurfAreaById; op
 
   const data = useMemo(
     () =>
-      surfArea.surf_spots!.map(({name, solid_rating}) => {
+      surfArea.surf_spots!.map(({name, solid_rating, id}) => {
         return {
           spot: name,
-          star: solid_rating || 0
+          star: solid_rating || 0,
+          id
         };
       }),
     [surfArea]
@@ -53,7 +56,7 @@ export const SurfAreaTable = ({surfArea, openModal}: {surfArea: SurfAreaById; op
         {rows.map((row, rowIndex) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()} key={rowIndex} className="relative" onClick={openModal} role="button">
+            <tr {...row.getRowProps()} key={rowIndex} className="relative" role="button">
               {row.cells.map((cell, cellIndex) => {
                 return (
                   <td {...cell.getCellProps()} key={cellIndex} className="px-6 py-4 whitespace-nowrap">
@@ -68,7 +71,15 @@ export const SurfAreaTable = ({surfArea, openModal}: {surfArea: SurfAreaById; op
                         )}
                       </div>
                     ) : (
-                      cell.render('Cell')
+                      <Link
+                        href={customSlugify(
+                          // @ts-ignore
+                          `/surf-spot/${cell.row.original.id}-${cell.row.original.spot.replace('/', '')}`
+                        )}>
+                        <a className="stretched-link" title={cell.value.spot}>
+                          <h2>{cell.render('Cell')}</h2>
+                        </a>
+                      </Link>
                     )}
                   </td>
                 );

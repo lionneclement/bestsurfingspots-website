@@ -1,7 +1,5 @@
 import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
-import {useState} from 'react';
-import ComingSoonModal from '../components/modal/ComingSoon';
 import {SurfAreaTable} from '../components/table/SurfAreaTable';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {SURF_AREA_BY_ID} from '../graphql/query/SurfAreaQuery';
@@ -29,11 +27,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 };
 
 const SurfArea: NextPage<Props> = ({surfArea}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const closeModal = () => setIsOpen(false);
-  const openModal = () => setIsOpen(true);
-
   return (
     <>
       <Head>
@@ -41,8 +34,7 @@ const SurfArea: NextPage<Props> = ({surfArea}) => {
       </Head>
       <main className="container py-10">
         <h1 className="text-center text-primary font-bold text-4xl">Best Surfing Spots in {surfArea.name}</h1>
-        <SurfAreaTable surfArea={surfArea} openModal={openModal} />
-        <ComingSoonModal isOpen={isOpen} closeModal={closeModal} />
+        <SurfAreaTable surfArea={surfArea} />
       </main>
     </>
   );
