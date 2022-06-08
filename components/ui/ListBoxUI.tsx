@@ -15,7 +15,7 @@ export const ListBoxUI = <TType,>({
   containerClassName?: string;
 }) => {
   return (
-    <div className={classNames('relative w-72 z-10', containerClassName)}>
+    <div className={classNames('relative w-72', containerClassName)}>
       <Listbox value={value} onChange={setValue}>
         <div className="relative mt-1">
           <Listbox.Button className="font-medium inline-flex w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">

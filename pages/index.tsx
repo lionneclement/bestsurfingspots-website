@@ -72,7 +72,7 @@ const Home: NextPage<Props> = ({product}) => {
               data={locationData}
               containerClassName="z-20"
             />
-            <ListBoxUI value={sizeSelected} setValue={setSizeSelected} data={sizeData} />
+            <ListBoxUI value={sizeSelected} setValue={setSizeSelected} data={sizeData} containerClassName="z-10" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-12 relative">
             {allProduct.map(({title, size_string, location, price, product_pictures, url, volume, picture}, index) => {
