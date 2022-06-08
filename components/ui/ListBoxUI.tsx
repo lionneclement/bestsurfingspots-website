@@ -26,9 +26,9 @@ export const ListBoxUI = <TType,>({
           </Listbox.Button>
           <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {data.map((data, id) => (
+              {data.map((data, index) => (
                 <Listbox.Option
-                  key={id}
+                  key={index}
                   className={({active}) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
                       active ? 'bg-primary text-white' : 'text-gray-900'

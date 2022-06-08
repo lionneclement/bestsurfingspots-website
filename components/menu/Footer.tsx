@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import {FunctionComponent} from 'react';
-import {LINKEDIN_LINK} from '../../data/Link';
 
 const Footer: FunctionComponent = () => {
   return (
@@ -13,20 +12,13 @@ const Footer: FunctionComponent = () => {
           </Link>
           . All Rights Reserved.
         </span>
-        <ul className="flex flex-wrap items-center mt-3 text-sm sm:mt-0">
+        {/* <ul className="flex flex-wrap items-center mt-3 text-sm sm:mt-0">
           <li>
             <Link href="/">
               <a className="mr-4 hover:underline md:mr-6">Home</a>
             </Link>
           </li>
-          <li>
-            <Link href={LINKEDIN_LINK}>
-              <a target="_blank" className="mr-4 hover:underline md:mr-6">
-                Contact
-              </a>
-            </Link>
-          </li>
-        </ul>
+        </ul> */}
       </div>
     </footer>
   );

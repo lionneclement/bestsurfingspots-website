@@ -27,28 +27,48 @@ export const costOfLivingData: CostOfLivingDataTypes[] = [
 ];
 
 export const sizeData: SizeDataTypes[] = [
-  {name: 'Size ?', id: 0, value: 0},
-  {name: "5'6", id: 1, value: 5.6},
-  {name: "5'8", id: 2, value: 5.8},
-  {name: "6'6", id: 3, value: 6.6},
-  {name: "6'9", id: 4, value: 6.9},
-  {name: "7'6", id: 5, value: 7.6},
-  {name: '9', id: 6, value: 9},
-  {name: "9'4", id: 7, value: 9.4},
-  {name: '10', id: 8, value: 10}
+  {name: 'Size ?', id: 0},
+  {name: "5'3", id: 1},
+  {name: "5'5", id: 2},
+  {name: "5'6", id: 3},
+  {name: "5'7", id: 4},
+  {name: "5'8", id: 5},
+  {name: "5'9", id: 6},
+  {name: "5'10", id: 7},
+  {name: "5'11", id: 8},
+  {name: "6'0", id: 9},
+  {name: "6'2", id: 10},
+  {name: "6'3", id: 11},
+  {name: "6'4", id: 12},
+  {name: "6'5", id: 13},
+  {name: "6'6", id: 14},
+  {name: "6'9", id: 15},
+  {name: "6'10", id: 16},
+  {name: "7'1", id: 17},
+  {name: "7'2", id: 18},
+  {name: "7'6", id: 19},
+  {name: "8'0", id: 20},
+  {name: "8'1", id: 21},
+  {name: "9'0", id: 22},
+  {name: "9'3", id: 23},
+  {name: "9'4", id: 24},
+  {name: "9'5", id: 25},
+  {name: "9'6", id: 26},
+  {name: "9'8", id: 27},
+  {name: "10'0", id: 28}
 ];
 
 export interface SizeDataTypes {
   name: string;
   id: number;
-  value: number;
 }
 
 export const locationData: LocationDataTypes[] = [
   {name: 'Where ?', id: 0},
   {name: 'Los Angeles, CA', id: 1},
   {name: 'San Diego, CA', id: 2},
-  {name: 'Carlsbad, CA', id: 3}
+  {name: 'Long Beach, CA', id: 3},
+  {name: 'Carlsbad, CA', id: 4}
 ];
 
 export interface LocationDataTypes {

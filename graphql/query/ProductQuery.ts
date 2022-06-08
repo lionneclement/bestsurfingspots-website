@@ -6,10 +6,11 @@ export const PRODUCT = gql`
       product_pictures {
         url
       }
+      picture
       price
       location
       description
-      size
+      size_string
       title
       url
     }
