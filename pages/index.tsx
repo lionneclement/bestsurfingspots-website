@@ -1,79 +1,48 @@
-import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
+import type {GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useEffect, useMemo, useState} from 'react';
 import {ListBoxUI} from '../components/ui/ListBoxUI';
-import {continentData, ContinentDataTypes, costOfLivingData, CostOfLivingDataTypes} from '../data/TableData';
+import {locationData, LocationDataTypes, sizeData, SizeDataTypes} from '../data/TableData';
 import {graphqlClient} from '../graphql/GraphqlClient';
-import {HOME_COUNTRY_ISO} from '../graphql/query/CountryIsoQuery';
-import {HomeCountryIso} from '../graphql/types/CountryIso';
-import {homeFilterPath, HomeFilterPathTypes, homePathName} from '../helpers/HomeFilterPath';
-import {getImageSrc} from '../helpers/Image';
-import {capitalize} from '../helpers/String';
-import {customSlugify} from '../utils/slugify';
+import {PRODUCT} from '../graphql/query/ProductQuery';
+import {Product} from '../graphql/types/Product';
 
 interface Props {
-  countryIso: HomeCountryIso[];
-  homeFilter: HomeFilterPathTypes | null;
+  product: Product[];
 }
 
-export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<GetStaticPropsResult<Props>> => {
-  const {slug} = context.query;
-
-  const homeFilter = homeFilterPath(slug);
-
-  if (slug && !homeFilter) return {notFound: true};
-
-  const countryIsoResult = await graphqlClient.query<{countryIso: HomeCountryIso[]}>({
-    query: HOME_COUNTRY_ISO
+export const getServerSideProps = async (): Promise<GetStaticPropsResult<Props>> => {
+  const productResult = await graphqlClient.query<{product: Product[]}>({
+    query: PRODUCT
   });
 
-  return {props: {countryIso: countryIsoResult.data.countryIso, homeFilter}};
+  return {props: {product: productResult.data.product}};
 };
 
-const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
-  const {push, pathname} = useRouter();
-  const [allCountry, setAllCountry] = useState<HomeCountryIso[]>(countryIso);
-  const [continentSelected, setContinentSelected] = useState<ContinentDataTypes>(
-    homeFilter?.continent || continentData[0]
-  );
-  const [costOfLivingSelected, setCostOfLivingSelected] = useState<CostOfLivingDataTypes>(
-    homeFilter?.costOfLiving || costOfLivingData[0]
-  );
+const Home: NextPage<Props> = ({product}) => {
+  const [allProduct, setAllProduct] = useState<Product[]>(product);
+  const {pathname} = useRouter();
+  const [sizeSelected, setSizeSelected] = useState<SizeDataTypes>(sizeData[0]);
+  const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(locationData[0]);
 
   useEffect(() => {
-    const pathname = homePathName({continentSelected, costOfLivingSelected});
-    push({pathname}, undefined, {shallow: true});
-  }, [continentSelected, costOfLivingSelected]);
-
-  const continentFilter = (newAllCountry: HomeCountryIso[]) => {
-    if (continentSelected.id === 0) return newAllCountry;
-    const continentName = continentData.filter(({id}) => id === continentSelected.id)[0].name;
-    return newAllCountry.filter(({continent}) => continentName.includes(continent.name));
-  };
-
-  useEffect(() => {
-    let newAllCountry = countryIso;
-    if (continentSelected.id > 0) {
-      newAllCountry = continentFilter(newAllCountry);
+    let newProduct = product;
+    if (sizeSelected.id > 0) {
+      newProduct = product.filter(({size_string}) => size_string === sizeSelected.name);
     }
-    if (costOfLivingSelected.id > 0) {
-      newAllCountry = newAllCountry.filter(
-        ({cost_of_livings}) => cost_of_livings[0].single_person <= costOfLivingSelected.costOfLiving
-      );
+    if (locationSelected.id > 0) {
+      newProduct = newProduct.filter(({location}) => location === locationSelected.name);
     }
 
-    setAllCountry(newAllCountry);
-  }, [continentSelected, costOfLivingSelected]);
+    setAllProduct(newProduct);
+  }, [sizeSelected, locationSelected]);
 
-  const headTitle = 'The best places to surf in the world';
-  const headDescription = `Discover the best surfing spots in the world. ${allCountry
-    .map(({name}, index) => `#${index + 1} ${name}`)
-    .join(', ')}`;
+  const headTitle = 'Buy used Surfboards in California';
+  const headDescription =
+    'Sale, Buy or Trade Surf, Surfing, Bodyboarding, snowboarding, skateboarding stuff for free, California used new surfboards wetsuits accessories etc';
   const image = 'https://storage.googleapis.com/bestsurfingspots/home.jpg';
-
   return useMemo(() => {
     return (
       <>
@@ -94,42 +63,41 @@ const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
           <meta data-rh property="og:image" content={image} />
         </Head>
         <main className="container my-10">
-          <h1 className="text-center text-primary font-bold text-4xl">Best Surfing Spots</h1>
-          <p className="text-center text-gray-400 font-medium text-lg mt-2">the best places to surf in the world</p>
+          <h1 className="text-center text-primary font-bold text-4xl">Buy and Sell</h1>
+          <p className="text-center text-gray-400 font-medium text-lg mt-2">Buy used Surfboards in California</p>
           <div className="flex justify-around my-6 flex-wrap">
             <ListBoxUI
-              value={continentSelected}
-              setValue={setContinentSelected}
-              data={continentData}
+              value={locationSelected}
+              setValue={setLocationSelected}
+              data={locationData}
               containerClassName="z-20"
             />
-            <ListBoxUI
-              value={costOfLivingSelected}
-              setValue={setCostOfLivingSelected}
-              data={costOfLivingData}
-              containerClassName="z-10"
-            />
+            <ListBoxUI value={sizeSelected} setValue={setSizeSelected} data={sizeData} />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {allCountry.map(({emoji, name, cost_of_livings, language_country_isos, continent, id, image}, index) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-12 relative">
+            {allProduct.map(({title, size_string, location, price, product_pictures, url, volume, picture}, index) => {
               return (
-                <div key={index} className="relative h-40 rounded-lg overflow-hidden">
-                  <Image src={getImageSrc(image)} className="object-cover" alt={name} layout="fill" />
-                  <div className="bg-[#00000080] w-full h-full absolute font-bold text-white">
-                    <span className="text-right absolute top-0 right-0 p-2">
-                      ${cost_of_livings[0].single_person} / month
-                    </span>
-                    <Link href={customSlugify(`/country/${id}-${name}`)}>
-                      <a className="stretched-link " title={name}>
-                        <h2 className="text-center absolute top-1/2 left-0 transform -translate-y-1/2 w-full text-2xl">
-                          {`${emoji} ${name}`}
-                        </h2>
-                      </a>
-                    </Link>
-                    <span className="text-right absolute bottom-0 left-0 p-2">
-                      🗣️ {capitalize(language_country_isos[0].language.name)}
-                    </span>
-                    <span className="text-right absolute bottom-0 right-0 p-2">{continent.name}</span>
+                <div key={index} className="relative h-full border rounded-xl overflow-hidden	">
+                  <div className="relative w-full h-72">
+                    <Image
+                      src={picture || product_pictures[0].url}
+                      alt={title}
+                      layout="fill"
+                      className="object-cover w-full relative"
+                    />
+                  </div>
+                  <div className="px-3 pt-3">
+                    <div className="flex justify-between text-gray-500">
+                      <span>${price}</span>
+                      <span>{location}</span>
+                    </div>
+                    <a className="stretched-link" target="_blank" rel="noreferrer" title={title} href={url}>
+                      <h2 className="text-lg font-semibold truncate my-1">{title}</h2>
+                    </a>
+                    <div className="flex justify-between mb-2">
+                      <span>Size {size_string}</span>
+                      {volume && <span>{volume}L</span>}
+                    </div>
                   </div>
                 </div>
               );
@@ -138,7 +106,7 @@ const Home: NextPage<Props> = ({countryIso, homeFilter}) => {
         </main>
       </>
     );
-  }, [allCountry]);
+  }, [allProduct, sizeSelected, locationSelected]);
 };
 
 export default Home;

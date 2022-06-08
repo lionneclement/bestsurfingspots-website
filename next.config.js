@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['storage.googleapis.com', 'd1lc72dkikf3w9.cloudfront.net', 'd12ke8i0d04z83.cloudfront.net']
+    domains: [
+      'scontent-cdg2-1.xx.fbcdn.net',
+      'scontent-cdt1-1.xx.fbcdn.net',
+      'storage.googleapis.com',
+      'd1lc72dkikf3w9.cloudfront.net',
+      'd12ke8i0d04z83.cloudfront.net'
+    ]
   },
   swcMinify: true,
   rewrites: async () => {
