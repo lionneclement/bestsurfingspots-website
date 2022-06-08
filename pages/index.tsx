@@ -39,7 +39,7 @@ const Home: NextPage<Props> = ({product}) => {
     setAllProduct(newProduct);
   }, [sizeSelected, locationSelected]);
 
-  const headTitle = 'Surboard sale buy trade California';
+  const headTitle = 'Buy used Surfboards in California';
   const headDescription =
     'Sale, Buy or Trade Surf, Surfing, Bodyboarding, snowboarding, skateboarding stuff for free, California used new surfboards wetsuits accessories etc';
   const image = 'https://storage.googleapis.com/bestsurfingspots/home.jpg';
