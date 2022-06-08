@@ -84,6 +84,7 @@ const Home: NextPage<Props> = ({product}) => {
                       alt={title}
                       layout="fill"
                       className="object-cover w-full relative"
+                      priority
                     />
                   </div>
                   <div className="px-3 pt-3">
