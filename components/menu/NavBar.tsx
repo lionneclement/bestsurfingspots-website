@@ -8,7 +8,7 @@ const NavBar: FunctionComponent = () => {
       <div className="flex flex-wrap justify-between items-center text-primary">
         <Link href="/">
           <a className="flex items-center">
-            <span className="self-center text-xl font-semibold whitespace-nowrap">Best Surfing Spots</span>
+            <span className="self-center text-xl font-semibold whitespace-nowrap">Buy and Sell</span>
           </a>
         </Link>
         <div className="w-full block w-auto">
