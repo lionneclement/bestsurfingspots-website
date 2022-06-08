@@ -38,7 +38,7 @@ export const sizeData: SizeDataTypes[] = [
   {name: "5'11", id: 8},
   {name: "6'0", id: 9},
   {name: "6'2", id: 10},
-  {name: "6'3", id: 11},
+  // {name: "6'3", id: 11},
   {name: "6'4", id: 12},
   {name: "6'5", id: 13},
   {name: "6'6", id: 14},
