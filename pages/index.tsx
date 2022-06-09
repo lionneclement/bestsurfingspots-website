@@ -4,6 +4,7 @@ import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useEffect, useMemo, useState} from 'react';
 import {ListBoxUI} from '../components/ui/ListBoxUI';
+import {MultipleListBoxUI} from '../components/ui/MultipleListBoxUi';
 import {locationData, LocationDataTypes, sizeData, SizeDataTypes} from '../data/TableData';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {PRODUCT} from '../graphql/query/ProductQuery';
@@ -25,13 +26,15 @@ export const getServerSideProps = async (): Promise<GetStaticPropsResult<Props>>
 const Home: NextPage<Props> = ({product}) => {
   const [allProduct, setAllProduct] = useState<Product[]>(product);
   const {pathname} = useRouter();
-  const [sizeSelected, setSizeSelected] = useState<SizeDataTypes>(sizeData[0]);
+  const [sizeSelected, setSizeSelected] = useState<SizeDataTypes[]>([sizeData[0]]);
+  console.log('sizeSelected: ', sizeSelected);
   const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(locationData[0]);
 
   useEffect(() => {
     let newProduct = product;
-    if (sizeSelected.id > 0) {
-      newProduct = product.filter(({size}) => size === sizeSelected.name);
+
+    if (sizeSelected.length > 0) {
+      newProduct = product.filter(({size}) => sizeSelected.map(({name}) => name).includes(size));
     }
     if (locationSelected.id > 0) {
       newProduct = newProduct.filter(
@@ -75,7 +78,12 @@ const Home: NextPage<Props> = ({product}) => {
               data={locationData}
               containerClassName="z-20"
             />
-            <ListBoxUI value={sizeSelected} setValue={setSizeSelected} data={sizeData} containerClassName="z-10" />
+            <MultipleListBoxUI
+              containerClassName="z-10"
+              data={sizeData}
+              setValue={setSizeSelected}
+              value={sizeSelected}
+            />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-12 relative">
             {allProduct.map(({title, size, location, price, url, volume, picture}, index) => {

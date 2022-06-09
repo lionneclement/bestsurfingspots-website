@@ -1,25 +1,26 @@
 import {Listbox, Transition} from '@headlessui/react';
 import {CheckIcon, SelectorIcon} from '@heroicons/react/solid';
-import {Fragment} from 'react';
+import {Dispatch, Fragment, SetStateAction} from 'react';
+import {SizeDataTypes} from '../../data/TableData';
 import {classNames} from '../../helpers/ClassName';
 
-export const ListBoxUI = <TType,>({
+export const MultipleListBoxUI = ({
   value,
   setValue,
   data,
   containerClassName = ''
 }: {
-  value: TType & {name: string};
-  setValue(value: TType): void;
-  data: TType[];
+  value: SizeDataTypes[];
+  setValue: Dispatch<SetStateAction<SizeDataTypes[]>>;
+  data: {name: string}[];
   containerClassName?: string;
 }) => {
   return (
     <div className={classNames('relative w-72', containerClassName)}>
-      <Listbox value={value} onChange={setValue} as="div">
+      <Listbox value={value} onChange={setValue} as="div" multiple>
         <div className="relative mt-1">
           <Listbox.Button className="font-medium inline-flex w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-            <span className="block truncate">{value.name}</span>
+            <span className="block truncate">Size ?</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
             </span>
@@ -52,6 +53,7 @@ export const ListBoxUI = <TType,>({
           </Transition>
         </div>
       </Listbox>
+      <div className="p-2 text-sm">{value.length > 0 && <>Size: {value.map(({name}) => name).join(', ')}</>}</div>
     </div>
   );
 };
