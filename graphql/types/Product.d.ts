@@ -2,12 +2,9 @@ export interface Product {
   price: number;
   location: string;
   description: string;
-  size_string: string;
+  size?: string;
   title: string;
   url: string;
   volume?: number;
-  picture?: string;
-  product_pictures: {
-    url: string;
-  }[];
+  picture: string;
 }

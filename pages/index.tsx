@@ -30,7 +30,7 @@ const Home: NextPage<Props> = ({product}) => {
   useEffect(() => {
     let newProduct = product;
     if (sizeSelected.id > 0) {
-      newProduct = product.filter(({size_string}) => size_string === sizeSelected.name);
+      newProduct = product.filter(({size}) => size === sizeSelected.name);
     }
     if (locationSelected.id > 0) {
       newProduct = newProduct.filter(({location}) => location === locationSelected.name);
@@ -75,17 +75,11 @@ const Home: NextPage<Props> = ({product}) => {
             <ListBoxUI value={sizeSelected} setValue={setSizeSelected} data={sizeData} containerClassName="z-10" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-12 relative">
-            {allProduct.map(({title, size_string, location, price, product_pictures, url, volume, picture}, index) => {
+            {allProduct.map(({title, size, location, price, url, volume, picture}, index) => {
               return (
                 <div key={index} className="relative h-full border rounded-xl overflow-hidden	">
                   <div className="relative w-full h-72">
-                    <Image
-                      src={picture || product_pictures[0].url}
-                      alt={title}
-                      layout="fill"
-                      className="object-cover w-full relative"
-                      priority
-                    />
+                    <Image src={picture} alt={title} layout="fill" className="object-cover w-full relative" />
                   </div>
                   <div className="px-3 pt-3">
                     <div className="flex justify-between text-gray-500">
@@ -96,7 +90,7 @@ const Home: NextPage<Props> = ({product}) => {
                       <h2 className="text-lg font-semibold truncate my-1">{title}</h2>
                     </a>
                     <div className="flex justify-between mb-2">
-                      <span>Size {size_string}</span>
+                      <span>Size {size}</span>
                       {volume && <span>{volume}L</span>}
                     </div>
                   </div>
