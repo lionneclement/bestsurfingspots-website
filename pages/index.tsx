@@ -15,7 +15,8 @@ interface Props {
 
 export const getServerSideProps = async (): Promise<GetStaticPropsResult<Props>> => {
   const productResult = await graphqlClient.query<{product: Product[]}>({
-    query: PRODUCT
+    query: PRODUCT,
+    fetchPolicy: 'no-cache'
   });
 
   return {props: {product: productResult.data.product}};
@@ -33,15 +34,17 @@ const Home: NextPage<Props> = ({product}) => {
       newProduct = product.filter(({size}) => size === sizeSelected.name);
     }
     if (locationSelected.id > 0) {
-      newProduct = newProduct.filter(({location}) => location === locationSelected.name);
+      newProduct = newProduct.filter(
+        ({location}) => location.toLocaleLowerCase() === locationSelected.name.toLocaleLowerCase()
+      );
     }
 
     setAllProduct(newProduct);
   }, [sizeSelected, locationSelected]);
 
-  const headTitle = 'Buy used Surfboards in California';
+  const headTitle = 'Buy used Surfboards in Bali, Indonesia';
   const headDescription =
-    'Sale, Buy or Trade Surf, Surfing, Bodyboarding, snowboarding, skateboarding stuff for free, California used new surfboards wetsuits accessories etc';
+    'Sale, Buy or Trade Surf, Surfing, Bodyboarding, snowboarding, skateboarding stuff for free, Bali Indonesia used new surfboards wetsuits accessories etc';
   const image = 'https://storage.googleapis.com/bestsurfingspots/home.jpg';
   return useMemo(() => {
     return (
@@ -64,7 +67,7 @@ const Home: NextPage<Props> = ({product}) => {
         </Head>
         <main className="container my-10">
           <h1 className="text-center text-primary font-bold text-4xl">Buy and Sell</h1>
-          <p className="text-center text-gray-400 font-medium text-lg mt-2">Buy used Surfboards in California</p>
+          <p className="text-center text-gray-400 font-medium text-lg mt-2">Buy used Surfboards in Bali, Indonesia</p>
           <div className="flex justify-around my-6 flex-wrap">
             <ListBoxUI
               value={locationSelected}
@@ -83,7 +86,7 @@ const Home: NextPage<Props> = ({product}) => {
                   </div>
                   <div className="px-3 pt-3">
                     <div className="flex justify-between text-gray-500">
-                      <span>${price}</span>
+                      <span>{price}</span>
                       <span>{location}</span>
                     </div>
                     <a className="stretched-link" target="_blank" rel="noreferrer" title={title} href={url}>

@@ -1,5 +1,5 @@
 export interface Product {
-  price: number;
+  price: string;
   location: string;
   description: string;
   size?: string;
