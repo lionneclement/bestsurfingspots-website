@@ -86,14 +86,14 @@ const Home: NextPage<Props> = ({product}) => {
                   </div>
                   <div className="px-3 pt-3">
                     <div className="flex justify-between text-gray-500">
-                      <span>{price}</span>
+                      <span>Size {size}</span>
                       <span>{location}</span>
                     </div>
                     <a className="stretched-link" target="_blank" rel="noreferrer" title={title} href={url}>
                       <h2 className="text-lg font-semibold truncate my-1">{title}</h2>
                     </a>
                     <div className="flex justify-between mb-2">
-                      <span>Size {size}</span>
+                      <span>{price}</span>
                       {volume && <span>{volume}L</span>}
                     </div>
                   </div>
