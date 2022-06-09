@@ -27,7 +27,6 @@ export const costOfLivingData: CostOfLivingDataTypes[] = [
 ];
 
 export const sizeData: SizeDataTypes[] = [
-  {name: 'Size ?', id: 0},
   {name: "5'0", id: 1},
   {name: "5'2", id: 2},
   {name: "5'3", id: 3},
