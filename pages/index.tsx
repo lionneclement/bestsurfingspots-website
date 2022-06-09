@@ -26,7 +26,7 @@ export const getServerSideProps = async (): Promise<GetStaticPropsResult<Props>>
 const Home: NextPage<Props> = ({product}) => {
   const [allProduct, setAllProduct] = useState<Product[]>(product);
   const {pathname} = useRouter();
-  const [sizeSelected, setSizeSelected] = useState<SizeDataTypes[]>([sizeData[0]]);
+  const [sizeSelected, setSizeSelected] = useState<SizeDataTypes[]>([]);
   console.log('sizeSelected: ', sizeSelected);
   const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(locationData[0]);
 
