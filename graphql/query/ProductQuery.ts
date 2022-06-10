@@ -1,5 +1,15 @@
 import gql from 'graphql-tag';
 
+export const PRODUCT_SITEMAP = gql`
+  query Product {
+    product(where: {size: {_is_null: false}}) {
+      id
+      title
+      updated_at
+    }
+  }
+`;
+
 export const PRODUCT = gql`
   query Product {
     product(where: {size: {_is_null: false}}) {

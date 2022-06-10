@@ -34,3 +34,9 @@ export interface ProductByIdVariable {
 export interface ProductBySizeVariable {
   size: string;
 }
+
+export interface ProductSitemap {
+  id: number;
+  title: string;
+  updated_at: Date;
+}
