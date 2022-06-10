@@ -14,6 +14,20 @@ export const PRODUCT = gql`
   }
 `;
 
+export const PRODUCT_BY_SIZE = gql`
+  query Product($size: String!) {
+    product(where: {size: {_eq: $size}}) {
+      picture
+      price
+      location
+      description
+      size
+      title
+      id
+    }
+  }
+`;
+
 export const PRODUCT_BY_ID = gql`
   query Product($id: Int!) {
     product: product_by_pk(id: $id) {

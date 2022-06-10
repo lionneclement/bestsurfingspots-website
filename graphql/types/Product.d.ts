@@ -30,3 +30,7 @@ export interface ProductById {
 export interface ProductByIdVariable {
   id: number;
 }
+
+export interface ProductBySizeVariable {
+  size: string;
+}

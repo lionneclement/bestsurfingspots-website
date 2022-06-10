@@ -3,15 +3,17 @@ import Head from 'next/head';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useMemo} from 'react';
+import {ProductItem} from '../components/item/ProductItem';
 import {graphqlClient} from '../graphql/GraphqlClient';
-import {PRODUCT_BY_ID} from '../graphql/query/ProductQuery';
-import {ProductById, ProductByIdVariable} from '../graphql/types/Product';
+import {PRODUCT_BY_ID, PRODUCT_BY_SIZE} from '../graphql/query/ProductQuery';
+import {Product, ProductById, ProductByIdVariable, ProductBySizeVariable} from '../graphql/types/Product';
 import {memberFormatter} from '../helpers/Number';
 import {capitalize} from '../helpers/String';
 import {customSlugify} from '../utils/slugify';
 
 interface Props {
   product: ProductById;
+  productBySize: Product[];
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<GetStaticPropsResult<Props>> => {
@@ -26,10 +28,15 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 
   if (!data.product || slug !== customSlugify(data.product.title)) return {notFound: true};
 
-  return {props: {product: data.product}};
+  const productSizeResult = await graphqlClient.query<{product: Product[]}, ProductBySizeVariable>({
+    query: PRODUCT_BY_SIZE,
+    variables: {size: data.product.size}
+  });
+
+  return {props: {product: data.product, productBySize: productSizeResult.data.product}};
 };
 
-const SurfBoard: NextPage<Props> = ({product}) => {
+const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
   const {pathname, push} = useRouter();
   const headTitle = product.title;
   const headDescription = product.description;
@@ -53,22 +60,22 @@ const SurfBoard: NextPage<Props> = ({product}) => {
           <meta data-rh property="og:url" content={pathname} />
           <meta data-rh property="og:image" content={image} />
         </Head>
-        <main className="sm:container sm:my-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 relative">
+        <main className="container sm:my-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 relative gap-4">
             <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-lg overflow-hidden bg-gray-300">
               <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" />
             </div>
-            <div className="px-2 sm:pl-4 mt-6 sm:mt-0">
+            <div className="px-2">
               <h1 className="text-center text-primary font-bold text-4xl">{product.title}</h1>
               <p className="mt-4">{product.description.replace('… See more', '')}</p>
-              <div className="mb-2 mt-12 flex justify-between font-medium">
+              <div className="mb-2 mt-6 flex justify-between font-medium">
                 <span>Size: {product.size}</span>
                 <span>📍{product.location}</span>
               </div>
               <span className="text-lg">
                 <strong>{product.price}</strong>
               </span>
-              <span className="mt-12 block font-semibold text-lg">From Facebook Group</span>
+              <span className="mt-10 block font-semibold text-lg">From Facebook Group</span>
               <div
                 className="mt-2 flex justify-between bg-[#7490a3] p-4 rounded-lg cursor-pointer text-white"
                 onClick={() => window.open(product.facebook_group.link, '_ blank')}>
@@ -98,6 +105,8 @@ const SurfBoard: NextPage<Props> = ({product}) => {
               </div>
             </div>
           </div>
+          <h2 className='font-semibold text-2xl mt-20 text-primary'>More Surfboard {product.size}</h2>
+          <ProductItem products={productBySize} />
         </main>
       </>
     );
