@@ -1,6 +1,7 @@
 import type {GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useEffect, useMemo, useState} from 'react';
 import {ListBoxUI} from '../components/ui/ListBoxUI';
@@ -9,6 +10,7 @@ import {locationData, LocationDataTypes, sizeData, SizeDataTypes} from '../data/
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {PRODUCT} from '../graphql/query/ProductQuery';
 import {Product} from '../graphql/types/Product';
+import {customSlugify} from '../utils/slugify';
 
 interface Props {
   product: Product[];
@@ -16,8 +18,7 @@ interface Props {
 
 export const getServerSideProps = async (): Promise<GetStaticPropsResult<Props>> => {
   const productResult = await graphqlClient.query<{product: Product[]}>({
-    query: PRODUCT,
-    fetchPolicy: 'no-cache'
+    query: PRODUCT
   });
 
   return {props: {product: productResult.data.product}};
@@ -27,7 +28,6 @@ const Home: NextPage<Props> = ({product}) => {
   const [allProduct, setAllProduct] = useState<Product[]>(product);
   const {pathname} = useRouter();
   const [sizeSelected, setSizeSelected] = useState<SizeDataTypes[]>([]);
-  console.log('sizeSelected: ', sizeSelected);
   const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(locationData[0]);
 
   useEffect(() => {
@@ -86,10 +86,10 @@ const Home: NextPage<Props> = ({product}) => {
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-12 relative">
-            {allProduct.map(({title, size, location, price, url, volume, picture}, index) => {
+            {allProduct.map(({title, size, location, price, picture, id}, index) => {
               return (
-                <div key={index} className="relative h-full border rounded-xl overflow-hidden	">
-                  <div className="relative w-full h-72">
+                <div key={index} className="relative h-full border rounded-lg overflow-hidden">
+                  <div className="relative w-full h-72 bg-gray-300">
                     <Image src={picture} alt={title} layout="fill" className="object-cover w-full relative" />
                   </div>
                   <div className="px-3 pt-3">
@@ -97,12 +97,13 @@ const Home: NextPage<Props> = ({product}) => {
                       <span>Size {size}</span>
                       <span>{location}</span>
                     </div>
-                    <a className="stretched-link" target="_blank" rel="noreferrer" title={title} href={url}>
-                      <h2 className="text-lg font-semibold truncate my-1">{title}</h2>
-                    </a>
+                    <Link href={customSlugify(`/surfboard/${id}-${title}`)}>
+                      <a className="stretched-link" title={title}>
+                        <h2 className="text-lg font-semibold truncate my-1">{title}</h2>
+                      </a>
+                    </Link>
                     <div className="flex justify-between mb-2">
                       <span>{price}</span>
-                      {volume && <span>{volume}L</span>}
                     </div>
                   </div>
                 </div>
