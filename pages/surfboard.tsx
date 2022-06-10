@@ -2,8 +2,9 @@ import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'ne
 import Head from 'next/head';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
-import {useMemo} from 'react';
+import {useMemo, useState} from 'react';
 import {ProductItem} from '../components/item/ProductItem';
+import {GroupModal} from '../components/modal/GroupModal';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {PRODUCT_BY_ID, PRODUCT_BY_SIZE} from '../graphql/query/ProductQuery';
 import {Product, ProductById, ProductByIdVariable, ProductBySizeVariable} from '../graphql/types/Product';
@@ -37,7 +38,22 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 };
 
 const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
-  const {pathname, push} = useRouter();
+  const {pathname} = useRouter();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+  const joinGroup = () => {
+    window.open(product.facebook_group.link, '_ blank');
+    closeModal();
+  };
+  const viewProduct = () => {
+    window.open(product.url, '_ blank');
+    closeModal();
+  };
+
+  const productClicked = () => (product.facebook_group.status === 'private' ? openModal() : viewProduct());
+
   const headTitle = product.title;
   const headDescription = product.description;
   const image = product.picture;
@@ -98,19 +114,20 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
               </div>
               <div className="mt-12 flex justify-center">
                 <button
-                  onClick={() => window.open(product.url, '_ blank')}
+                  onClick={productClicked}
                   className="rounded-lg bg-primary font-medium text-lg text-white text-center py-4 px-16 cursor-pointer">
                   View Full Details
                 </button>
               </div>
             </div>
           </div>
-          <h2 className='font-semibold text-2xl mt-20 text-primary'>More Surfboards {product.size}</h2>
+          <h2 className="font-semibold text-2xl mt-20 text-primary">More Surfboards {product.size}</h2>
           <ProductItem products={productBySize} />
+          <GroupModal isOpen={isOpen} joinGroup={joinGroup} viewProduct={viewProduct} closeModal={closeModal} />
         </main>
       </>
     );
-  }, [product]);
+  }, [product, isOpen, productBySize]);
 };
 
 export default SurfBoard;
