@@ -6,6 +6,8 @@ import {useMemo} from 'react';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {PRODUCT_BY_ID} from '../graphql/query/ProductQuery';
 import {ProductById, ProductByIdVariable} from '../graphql/types/Product';
+import {memberFormatter} from '../helpers/Number';
+import {capitalize} from '../helpers/String';
 import {customSlugify} from '../utils/slugify';
 
 interface Props {
@@ -56,7 +58,7 @@ const SurfBoard: NextPage<Props> = ({product}) => {
             <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-lg overflow-hidden bg-gray-300">
               <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" />
             </div>
-            <div className="container sm:px-6 mt-6 sm:mt-0">
+            <div className="px-2 sm:pl-4 mt-6 sm:mt-0">
               <h1 className="text-center text-primary font-bold text-4xl">{product.title}</h1>
               <p className="mt-4">{product.description.replace('… See more', '')}</p>
               <div className="mb-2 mt-12 flex justify-between font-medium">
@@ -66,10 +68,31 @@ const SurfBoard: NextPage<Props> = ({product}) => {
               <span className="text-lg">
                 <strong>{product.price}</strong>
               </span>
+              <span className="mt-12 block font-semibold text-lg">From Facebook Group</span>
+              <div
+                className="mt-2 flex justify-between bg-[#7490a3] p-4 rounded-lg cursor-pointer text-white"
+                onClick={() => window.open(product.facebook_group.link, '_ blank')}>
+                <div className="mt-2 min-h-[4rem] min-w-[4rem] relative h-fit rounded-lg overflow-hidden mr-4">
+                  <Image
+                    src={product.facebook_group.picture}
+                    alt={product.facebook_group.name}
+                    layout="fill"
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <span className="block font-medium text-lg">{product.facebook_group.name}</span>
+                  <span className="block text-gray-200">
+                    {capitalize(product.facebook_group.status)} group -{' '}
+                    {memberFormatter(product.facebook_group.members)}
+                  </span>
+                  <span className="text-clip text-sm text-gray-300">{product.facebook_group.description}</span>
+                </div>
+              </div>
               <div className="mt-12 flex justify-center">
                 <button
                   onClick={() => window.open(product.url, '_ blank')}
-                  className="rounded-lg w-40 bg-primary text-white text-center p-3 cursor-pointer">
+                  className="rounded-lg bg-primary font-medium text-lg text-white text-center py-4 px-16 cursor-pointer">
                   View Full Details
                 </button>
               </div>

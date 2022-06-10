@@ -23,6 +23,7 @@ export interface ProductById {
     link: string;
     status: string;
     picture: string;
+    description: string;
   };
 }
 

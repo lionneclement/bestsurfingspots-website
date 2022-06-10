@@ -1,14 +1,14 @@
-export const populationFormatter = (population: number): string => {
-  if (population >= 1000000000) {
-    return (population / 1000000000).toFixed(1).replace(/\.0$/, '') + ' billion';
+export const memberFormatter = (member: number): string => {
+  if (member >= 1000000000) {
+    return (member / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
   }
-  if (population >= 1000000) {
-    return (population / 1000000).toFixed(1).replace(/\.0$/, '') + ' million';
+  if (member >= 1000000) {
+    return (member / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
   }
-  if (population >= 1000) {
-    return (population / 1000).toFixed(3).replace(/\.0$/, '').replace('.', ',');
+  if (member >= 1000) {
+    return (member / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
   }
-  return population.toString();
+  return member.toString();
 };
 
 export const round5 = (x: number) => {

@@ -26,6 +26,7 @@ export const PRODUCT_BY_ID = gql`
       title
       url
       facebook_group {
+        description
         name
         members
         link
