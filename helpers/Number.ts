@@ -10,7 +10,3 @@ export const memberFormatter = (member: number): string => {
   }
   return member.toString();
 };
-
-export const round5 = (x: number) => {
-  return Math.ceil(x / 5) * 5;
-};

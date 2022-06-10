@@ -105,7 +105,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
               </div>
             </div>
           </div>
-          <h2 className='font-semibold text-2xl mt-20 text-primary'>More Surfboard {product.size}</h2>
+          <h2 className='font-semibold text-2xl mt-20 text-primary'>More Surfboards {product.size}</h2>
           <ProductItem products={productBySize} />
         </main>
       </>
