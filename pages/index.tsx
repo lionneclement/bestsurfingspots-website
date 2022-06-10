@@ -1,8 +1,8 @@
 import type {GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useEffect, useMemo, useState} from 'react';
+import {ProductItem} from '../components/item/ProductItem';
 import {ListBoxUI} from '../components/ui/ListBoxUI';
 import {MultipleListBoxUI} from '../components/ui/MultipleListBoxUi';
 import {locationData, LocationDataTypes, sizeData, SizeDataTypes} from '../data/TableData';
@@ -16,8 +16,7 @@ interface Props {
 
 export const getServerSideProps = async (): Promise<GetStaticPropsResult<Props>> => {
   const productResult = await graphqlClient.query<{product: Product[]}>({
-    query: PRODUCT,
-    fetchPolicy: 'no-cache'
+    query: PRODUCT
   });
 
   return {props: {product: productResult.data.product}};
@@ -27,7 +26,6 @@ const Home: NextPage<Props> = ({product}) => {
   const [allProduct, setAllProduct] = useState<Product[]>(product);
   const {pathname} = useRouter();
   const [sizeSelected, setSizeSelected] = useState<SizeDataTypes[]>([]);
-  console.log('sizeSelected: ', sizeSelected);
   const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(locationData[0]);
 
   useEffect(() => {
@@ -85,30 +83,7 @@ const Home: NextPage<Props> = ({product}) => {
               value={sizeSelected}
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-12 relative">
-            {allProduct.map(({title, size, location, price, url, volume, picture}, index) => {
-              return (
-                <div key={index} className="relative h-full border rounded-xl overflow-hidden	">
-                  <div className="relative w-full h-72">
-                    <Image src={picture} alt={title} layout="fill" className="object-cover w-full relative" />
-                  </div>
-                  <div className="px-3 pt-3">
-                    <div className="flex justify-between text-gray-500">
-                      <span>Size {size}</span>
-                      <span>{location}</span>
-                    </div>
-                    <a className="stretched-link" target="_blank" rel="noreferrer" title={title} href={url}>
-                      <h2 className="text-lg font-semibold truncate my-1">{title}</h2>
-                    </a>
-                    <div className="flex justify-between mb-2">
-                      <span>{price}</span>
-                      {volume && <span>{volume}L</span>}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <ProductItem products={allProduct} />
         </main>
       </>
     );
