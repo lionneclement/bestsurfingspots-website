@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import {Product} from '../../graphql/types/Product';
-import {customSlugify} from '../../utils/slugify';
+import {surfboardLink} from '../../helpers/Link';
 
 export const ProductItem = ({products}: {products: Product[]}) => {
   return (
@@ -18,7 +18,7 @@ export const ProductItem = ({products}: {products: Product[]}) => {
                 <span>{location}</span>
               </div>
               <div className="truncate">
-                <Link href={customSlugify(`/surfboard/${id}-${title}`)}>
+                <Link href={surfboardLink({id, title})}>
                   <a className="stretched-link" title={title}>
                     <span className="text-lg font-semibold my-1">{title}</span>
                   </a>

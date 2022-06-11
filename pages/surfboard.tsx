@@ -27,7 +27,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
     variables: {id: Number(id)}
   });
 
-  if (!data.product || slug !== customSlugify(data.product.title)) return {notFound: true};
+  if (!data.product || slug !== customSlugify(data.product.title.replace(/\//g, '-'))) return {notFound: true};
 
   const productSizeResult = await graphqlClient.query<{product: Product[]}, ProductBySizeVariable>({
     query: PRODUCT_BY_SIZE,

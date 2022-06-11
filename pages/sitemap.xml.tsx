@@ -2,7 +2,7 @@ import {GetServerSidePropsContext} from 'next';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {PRODUCT_SITEMAP} from '../graphql/query/ProductQuery';
 import {ProductSitemap} from '../graphql/types/Product';
-import {customSlugify} from '../utils/slugify';
+import {surfboardLink} from '../helpers/Link';
 
 const Sitemap = () => {
   return null;
@@ -14,7 +14,7 @@ export const getServerSideProps = async ({res}: GetServerSidePropsContext) => {
   });
 
   const dynamicPaths = data.product.map(({id, title, updated_at}) => {
-    const loc = `${process.env.NEXT_PUBLIC_URI}${customSlugify(`/surfboard/${id}-${title}`)}`;
+    const loc = `${process.env.NEXT_PUBLIC_URI}${surfboardLink({id, title})}`;
 
     return `
     <url>
