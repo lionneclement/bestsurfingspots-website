@@ -25,8 +25,8 @@ export const PRODUCT = gql`
 `;
 
 export const PRODUCT_BY_SIZE = gql`
-  query Product($size: String!) {
-    product(where: {size: {_eq: $size}}) {
+  query Product($size: String!, $id: Int!) {
+    product(where: {size: {_eq: $size}, id: {_neq: $id}}) {
       picture
       price
       location

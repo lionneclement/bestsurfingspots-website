@@ -31,7 +31,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 
   const productSizeResult = await graphqlClient.query<{product: Product[]}, ProductBySizeVariable>({
     query: PRODUCT_BY_SIZE,
-    variables: {size: data.product.size}
+    variables: {size: data.product.size, id: data.product.id}
   });
 
   return {props: {product: data.product, productBySize: productSizeResult.data.product}};

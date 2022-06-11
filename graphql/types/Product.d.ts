@@ -33,6 +33,7 @@ export interface ProductByIdVariable {
 
 export interface ProductBySizeVariable {
   size: string;
+  id: number;
 }
 
 export interface ProductSitemap {
