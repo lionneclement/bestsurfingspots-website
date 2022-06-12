@@ -8,6 +8,14 @@ const nextConfig = {
     return {
       fallback: [
         {
+          source: '/buy-used-surfboards-in-:slug-bali-indonesia',
+          destination: '/?slug=:slug'
+        },
+        {
+          source: '/buy-used-surfboards-in-:slug-bali-indonesia',
+          destination: '/?slug=:slug'
+        },
+        {
           source: '/surfboard/:id(\\d{1,})-:slug',
           destination: '/surfboard?id=:id&slug=:slug'
         }
