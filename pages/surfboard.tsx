@@ -123,8 +123,12 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
               </div>
             </div>
           </div>
-          <h2 className="font-semibold text-2xl mt-20 text-primary">More Surfboards {product.size}</h2>
-          <ProductItem products={productBySize} />
+          {productBySize.length > 0 && (
+            <>
+              <h2 className="font-semibold text-2xl mt-20 text-primary">More Surfboards {product.size}</h2>
+              <ProductItem products={productBySize} />
+            </>
+          )}
           <GroupModal isOpen={isOpen} joinGroup={joinGroup} viewProduct={viewProduct} closeModal={closeModal} />
         </main>
       </>
