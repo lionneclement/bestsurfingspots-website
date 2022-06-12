@@ -13,7 +13,6 @@ export const PRODUCT_SITEMAP = gql`
 export const PRODUCT = gql`
   query Product {
     product(
-      limit: 100
       order_by: {facebook_group_id: desc, visit: desc}
       where: {size: {_is_null: false}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}
     ) {
