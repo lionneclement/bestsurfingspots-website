@@ -3,6 +3,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useMemo, useState} from 'react';
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 import {ProductItem} from '../components/item/ProductItem';
 import {GroupModal} from '../components/modal/GroupModal';
 import {graphqlClient} from '../graphql/GraphqlClient';
@@ -78,9 +80,11 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
         </Head>
         <main className="container sm:my-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 relative gap-4">
-            <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-lg overflow-hidden bg-gray-300">
-              <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" />
-            </div>
+            <Zoom>
+              <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-lg overflow-hidden bg-gray-300">
+                <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" />
+              </div>
+            </Zoom>
             <div className="px-2">
               <div onClick={productClicked} role="button">
                 <h1 className="text-center text-primary font-bold text-4xl">{product.title}</h1>
