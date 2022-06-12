@@ -43,7 +43,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
     variables: {size: data.product.size, id: data.product.id}
   });
 
-  await graphqlClient.mutate<{product: {id: number}}, UpdateVisitProduct>({
+  graphqlClient.mutate<{product: {id: number}}, UpdateVisitProduct>({
     mutation: UPDATE_VISIT_PRODUCT,
     variables: {visit: data.product.visit + 1, id: data.product.id}
   });
