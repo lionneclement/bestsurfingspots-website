@@ -12,7 +12,10 @@ export const PRODUCT_SITEMAP = gql`
 
 export const PRODUCT = gql`
   query Product {
-    product(where: {size: {_is_null: false}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}) {
+    product(
+      order_by: {visit: desc}
+      where: {size: {_is_null: false}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}
+    ) {
       picture
       price
       location
@@ -26,7 +29,10 @@ export const PRODUCT = gql`
 
 export const PRODUCT_BY_SIZE = gql`
   query Product($size: String!, $id: Int!) {
-    product(where: {size: {_eq: $size}, id: {_neq: $id}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}) {
+    product(
+      order_by: {visit: desc}
+      where: {size: {_eq: $size}, id: {_neq: $id}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}
+    ) {
       picture
       price
       location
@@ -42,6 +48,7 @@ export const PRODUCT_BY_ID = gql`
   query Product($id: Int!) {
     product: product_by_pk(id: $id) {
       id
+      visit
       description
       location
       picture

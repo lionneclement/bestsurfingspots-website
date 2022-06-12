@@ -10,6 +10,7 @@ export interface Product {
 
 export interface ProductById {
   id: number;
+  visit: number;
   price: string;
   location: string;
   description: string;
@@ -40,4 +41,9 @@ export interface ProductSitemap {
   id: number;
   title: string;
   updated_at: Date;
+}
+
+export interface UpdateVisitProduct {
+  id: number;
+  visit: number;
 }

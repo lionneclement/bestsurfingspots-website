@@ -3,11 +3,20 @@ import Head from 'next/head';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useMemo, useState} from 'react';
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 import {ProductItem} from '../components/item/ProductItem';
 import {GroupModal} from '../components/modal/GroupModal';
 import {graphqlClient} from '../graphql/GraphqlClient';
+import {UPDATE_VISIT_PRODUCT} from '../graphql/mutation/ProductMutation';
 import {PRODUCT_BY_ID, PRODUCT_BY_SIZE} from '../graphql/query/ProductQuery';
-import {Product, ProductById, ProductByIdVariable, ProductBySizeVariable} from '../graphql/types/Product';
+import {
+  Product,
+  ProductById,
+  ProductByIdVariable,
+  ProductBySizeVariable,
+  UpdateVisitProduct
+} from '../graphql/types/Product';
 import {memberFormatter} from '../helpers/Number';
 import {capitalize} from '../helpers/String';
 import {customSlugify} from '../utils/slugify';
@@ -32,6 +41,11 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
   const productSizeResult = await graphqlClient.query<{product: Product[]}, ProductBySizeVariable>({
     query: PRODUCT_BY_SIZE,
     variables: {size: data.product.size, id: data.product.id}
+  });
+
+  graphqlClient.mutate<{product: {id: number}}, UpdateVisitProduct>({
+    mutation: UPDATE_VISIT_PRODUCT,
+    variables: {visit: data.product.visit + 1, id: data.product.id}
   });
 
   return {props: {product: data.product, productBySize: productSizeResult.data.product}};
@@ -78,9 +92,11 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
         </Head>
         <main className="container sm:my-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 relative gap-4">
-            <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-lg overflow-hidden bg-gray-300">
-              <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" />
-            </div>
+            <Zoom>
+              <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-lg overflow-hidden bg-gray-300">
+                <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" priority />
+              </div>
+            </Zoom>
             <div className="px-2">
               <div onClick={productClicked} role="button">
                 <h1 className="text-center text-primary font-bold text-4xl">{product.title}</h1>

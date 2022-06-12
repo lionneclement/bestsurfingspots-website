@@ -1,5 +1,6 @@
 import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useEffect, useMemo, useState} from 'react';
 import {ProductItem} from '../components/item/ProductItem';
@@ -97,7 +98,14 @@ const Home: NextPage<Props> = ({product, slug}) => {
               value={sizeSelected}
             />
           </div>
-          <ProductItem products={allProduct} />
+          {allProduct.length === 0 ? (
+            <div className="text-center mt-20">
+              <Image src="/no-results.png" alt="" height={100} width={100} />
+              <span className="text-2xl block mt-6">Bummer! No results.</span>
+            </div>
+          ) : (
+            <ProductItem products={allProduct} />
+          )}
         </main>
       </>
     );

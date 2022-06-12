@@ -10,7 +10,13 @@ export const ProductItem = ({products}: {products: Product[]}) => {
         return (
           <div key={index} className="relative h-full border rounded-lg overflow-hidden">
             <div className="relative w-full h-72 bg-gray-300">
-              <Image src={picture} alt={title} layout="fill" className="object-cover w-full relative" />
+              <Image
+                src={picture}
+                alt={title}
+                layout="fill"
+                className="object-cover w-full relative"
+                priority={index < 8}
+              />
             </div>
             <div className="px-3 pt-3">
               <div className="flex justify-between text-gray-500">
