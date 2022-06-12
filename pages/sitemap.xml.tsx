@@ -34,6 +34,22 @@ export const getServerSideProps = async ({res}: GetServerSidePropsContext) => {
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
+`,
+    `
+<url>
+  <loc>${process.env.NEXT_PUBLIC_URI}/buy-used-surfboards-in-badung-bali-indonesia</loc>
+  <lastmod>${new Date().toISOString()}</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.5</priority>
+</url>
+`,
+    `
+<url>
+  <loc>${process.env.NEXT_PUBLIC_URI}/buy-used-surfboards-in-denpasar-bali-indonesia</loc>
+  <lastmod>${new Date().toISOString()}</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.5</priority>
+</url>
 `
   ];
 
