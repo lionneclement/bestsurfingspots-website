@@ -94,7 +94,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 relative gap-4">
             <Zoom>
               <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-lg overflow-hidden bg-gray-300">
-                <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" />
+                <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" priority />
               </div>
             </Zoom>
             <div className="px-2">
