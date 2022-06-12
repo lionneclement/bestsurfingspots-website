@@ -8,8 +8,15 @@ import 'react-medium-image-zoom/dist/styles.css';
 import {ProductItem} from '../components/item/ProductItem';
 import {GroupModal} from '../components/modal/GroupModal';
 import {graphqlClient} from '../graphql/GraphqlClient';
+import {UPDATE_VISIT_PRODUCT} from '../graphql/mutation/ProductMutation';
 import {PRODUCT_BY_ID, PRODUCT_BY_SIZE} from '../graphql/query/ProductQuery';
-import {Product, ProductById, ProductByIdVariable, ProductBySizeVariable} from '../graphql/types/Product';
+import {
+  Product,
+  ProductById,
+  ProductByIdVariable,
+  ProductBySizeVariable,
+  UpdateVisitProduct
+} from '../graphql/types/Product';
 import {memberFormatter} from '../helpers/Number';
 import {capitalize} from '../helpers/String';
 import {customSlugify} from '../utils/slugify';
@@ -34,6 +41,11 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
   const productSizeResult = await graphqlClient.query<{product: Product[]}, ProductBySizeVariable>({
     query: PRODUCT_BY_SIZE,
     variables: {size: data.product.size, id: data.product.id}
+  });
+
+  await graphqlClient.mutate<{product: {id: number}}, UpdateVisitProduct>({
+    mutation: UPDATE_VISIT_PRODUCT,
+    variables: {visit: data.product.visit + 1, id: data.product.id}
   });
 
   return {props: {product: data.product, productBySize: productSizeResult.data.product}};
