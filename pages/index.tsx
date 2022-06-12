@@ -1,4 +1,4 @@
-import type {GetStaticPropsResult, NextPage} from 'next';
+import type {GetServerSidePropsContext, GetStaticPropsResult, NextPage} from 'next';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
 import {useEffect, useMemo, useState} from 'react';
@@ -12,21 +12,27 @@ import {Product} from '../graphql/types/Product';
 
 interface Props {
   product: Product[];
+  slug: null | string | string[];
 }
 
-export const getServerSideProps = async (): Promise<GetStaticPropsResult<Props>> => {
+export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<GetStaticPropsResult<Props>> => {
+  const {slug} = context.query;
+
+  if (slug && slug !== 'badung' && slug !== 'denpasar') return {notFound: true};
   const productResult = await graphqlClient.query<{product: Product[]}>({
     query: PRODUCT
   });
 
-  return {props: {product: productResult.data.product}};
+  return {props: {product: productResult.data.product, slug: slug || null}};
 };
 
-const Home: NextPage<Props> = ({product}) => {
+const Home: NextPage<Props> = ({product, slug}) => {
   const [allProduct, setAllProduct] = useState<Product[]>(product);
-  const {pathname} = useRouter();
+  const {pathname, push} = useRouter();
   const [sizeSelected, setSizeSelected] = useState<SizeDataTypes[]>([]);
-  const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(locationData[0]);
+  const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(
+    locationData[slug === 'badung' ? 1 : slug === 'denpasar' ? 2 : 0]
+  );
 
   useEffect(() => {
     let newProduct = product;
@@ -42,6 +48,14 @@ const Home: NextPage<Props> = ({product}) => {
 
     setAllProduct(newProduct);
   }, [sizeSelected, locationSelected]);
+
+  useEffect(() => {
+    push(
+      locationSelected.id === 0 ? '/' : `/buy-used-surfboards-in-${locationSelected.name.toLowerCase()}-bali-indonesia`,
+      undefined,
+      {shallow: true}
+    );
+  }, [locationSelected]);
 
   const headTitle = 'Buy used Surfboards in Bali, Indonesia';
   const headDescription =

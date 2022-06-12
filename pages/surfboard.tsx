@@ -31,7 +31,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 
   const productSizeResult = await graphqlClient.query<{product: Product[]}, ProductBySizeVariable>({
     query: PRODUCT_BY_SIZE,
-    variables: {size: data.product.size}
+    variables: {size: data.product.size, id: data.product.id}
   });
 
   return {props: {product: data.product, productBySize: productSizeResult.data.product}};
@@ -82,34 +82,36 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
               <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" />
             </div>
             <div className="px-2">
-              <h1 className="text-center text-primary font-bold text-4xl">{product.title}</h1>
-              <p className="mt-4">{product.description.replace('… See more', '')}</p>
-              <div className="mb-2 mt-6 flex justify-between font-medium">
-                <span>Size: {product.size}</span>
-                <span>📍{product.location}</span>
-              </div>
-              <span className="text-lg">
-                <strong>{product.price}</strong>
-              </span>
-              <span className="mt-10 block font-semibold text-lg">From Facebook Group</span>
-              <div
-                className="mt-2 flex justify-between bg-[#7490a3] p-4 rounded-lg cursor-pointer text-white"
-                onClick={() => window.open(product.facebook_group.link, '_ blank')}>
-                <div className="mt-2 min-h-[4rem] min-w-[4rem] relative h-fit rounded-lg overflow-hidden mr-4">
-                  <Image
-                    src={product.facebook_group.picture}
-                    alt={product.facebook_group.name}
-                    layout="fill"
-                    className="object-cover"
-                  />
+              <div onClick={productClicked} role="button">
+                <h1 className="text-center text-primary font-bold text-4xl">{product.title}</h1>
+                <p className="mt-4">{product.description.replace('… See more', '')}</p>
+                <div className="mb-2 mt-6 flex justify-between font-medium">
+                  <span>Size: {product.size}</span>
+                  <span>📍{product.location}</span>
                 </div>
-                <div>
-                  <span className="block font-medium text-lg">{product.facebook_group.name}</span>
-                  <span className="block text-gray-200">
-                    {capitalize(product.facebook_group.status)} group -{' '}
-                    {memberFormatter(product.facebook_group.members)}
-                  </span>
-                  <span className="text-clip text-sm text-gray-300">{product.facebook_group.description}</span>
+                <span className="text-lg">
+                  <strong>{product.price}</strong>
+                </span>
+              </div>
+              <div onClick={() => window.open(product.facebook_group.link, '_ blank')} role="button">
+                <span className="mt-10 block font-semibold text-lg">From Facebook Group</span>
+                <div className="mt-2 flex justify-between bg-[#7490a3] p-4 rounded-lg cursor-pointer text-white">
+                  <div className="mt-2 min-h-[4rem] min-w-[4rem] relative h-fit rounded-lg overflow-hidden mr-4">
+                    <Image
+                      src={product.facebook_group.picture}
+                      alt={product.facebook_group.name}
+                      layout="fill"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <span className="block font-medium text-lg">{product.facebook_group.name}</span>
+                    <span className="block text-gray-200">
+                      {capitalize(product.facebook_group.status)} group -{' '}
+                      {memberFormatter(product.facebook_group.members)}
+                    </span>
+                    <span className="text-clip text-sm text-gray-300">{product.facebook_group.description}</span>
+                  </div>
                 </div>
               </div>
               <div className="mt-12 flex justify-center">
@@ -121,8 +123,12 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
               </div>
             </div>
           </div>
-          <h2 className="font-semibold text-2xl mt-20 text-primary">More Surfboards {product.size}</h2>
-          <ProductItem products={productBySize} />
+          {productBySize.length > 0 && (
+            <>
+              <h2 className="font-semibold text-2xl mt-20 text-primary">More Surfboards {product.size}</h2>
+              <ProductItem products={productBySize} />
+            </>
+          )}
           <GroupModal isOpen={isOpen} joinGroup={joinGroup} viewProduct={viewProduct} closeModal={closeModal} />
         </main>
       </>
