@@ -8,16 +8,20 @@ const nextConfig = {
     return {
       fallback: [
         {
-          source: '/buy-used-surfboards-in-:slug-bali-indonesia',
-          destination: '/?slug=:slug'
+          source: '/buy-used-surfboards-in-:location-bali-indonesia',
+          destination: '/?location=:location'
         },
         {
-          source: '/buy-used-surfboards-in-:slug-bali-indonesia',
-          destination: '/?slug=:slug'
+          source: '/buy-used-surfboards-in-:location-bali-indonesia-surfboards-size-:size',
+          destination: '/?location=:location&size=:size'
+        },
+        {
+          source: '/surfboards-size-:size',
+          destination: '/?size=:size'
         },
         {
           source: '/surfboard/:id(\\d{1,})-:slug',
-          destination: '/surfboard?id=:id&slug=:slug'
+          destination: '/surfboard?id=:id&location=:slug'
         }
       ]
     };

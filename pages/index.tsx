@@ -10,30 +10,41 @@ import {locationData, LocationDataTypes, sizeData, SizeDataTypes} from '../data/
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {PRODUCT} from '../graphql/query/ProductQuery';
 import {Product} from '../graphql/types/Product';
+import {customSlugify} from '../utils/slugify';
 
 interface Props {
   product: Product[];
-  slug: null | string | string[];
+  location: null | string | string[];
+  size: null | string;
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<GetStaticPropsResult<Props>> => {
-  const {slug} = context.query;
+  const {location, size} = context.query;
 
-  if (slug && slug !== 'badung' && slug !== 'denpasar') return {notFound: true};
+  if (location && location !== 'badung' && location !== 'denpasar') return {notFound: true};
   const productResult = await graphqlClient.query<{product: Product[]}>({
     query: PRODUCT
   });
 
-  return {props: {product: productResult.data.product, slug: slug || null}};
+  return {
+    props: {
+      product: productResult.data.product,
+      location: location || null,
+      size: (size as string) || null
+    }
+  };
 };
 
-const Home: NextPage<Props> = ({product, slug}) => {
+const Home: NextPage<Props> = ({product, location, size = ''}) => {
   const [allProduct, setAllProduct] = useState<Product[]>(product);
   const {pathname, push} = useRouter();
-  const [sizeSelected, setSizeSelected] = useState<SizeDataTypes[]>([]);
-  const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(
-    locationData[slug === 'badung' ? 1 : slug === 'denpasar' ? 2 : 0]
-  );
+
+  const sizeByUrl = size?.match(/.{1,2}/g)?.map((item) => item.slice(0, 1) + "'" + item.slice(1));
+  const initSize = sizeData.filter(({name}) => sizeByUrl?.includes(name));
+  const [sizeSelected, setSizeSelected] = useState<SizeDataTypes[]>(initSize);
+
+  const initLocation = locationData[location === 'badung' ? 1 : location === 'denpasar' ? 2 : 0];
+  const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(initLocation);
 
   useEffect(() => {
     let newProduct = product;
@@ -51,12 +62,14 @@ const Home: NextPage<Props> = ({product, slug}) => {
   }, [sizeSelected, locationSelected]);
 
   useEffect(() => {
-    push(
-      locationSelected.id === 0 ? '/' : `/buy-used-surfboards-in-${locationSelected.name.toLowerCase()}-bali-indonesia`,
-      undefined,
-      {shallow: true}
-    );
-  }, [locationSelected]);
+    const formatLocationUrl = () => `buy-used-surfboards-in-${locationSelected.name}-bali-indonesia`;
+    const formatSizeUrl = () => `${url && '-'}surfboards-size-${sizeSelected.map(({name}) => name)}`;
+
+    let url = '';
+    if (locationSelected.id > 0) url += formatLocationUrl();
+    if (sizeSelected.length > 0) url += formatSizeUrl();
+    push('/' + customSlugify(url), undefined, {shallow: true});
+  }, [locationSelected, sizeSelected]);
 
   const headTitle = 'Buy used Surfboards in Bali, Indonesia';
   const headDescription =
