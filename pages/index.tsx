@@ -32,10 +32,16 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
     })
   ]);
 
+  const productSize = sizeData
+    .filter((item) => productSizeResult.data.product?.some(({size}) => size === item))
+    .map((size, index) => {
+      return {size, id: index};
+    });
+
   return {
     props: {
       product: productResult.data.product,
-      productSize: productSizeResult.data.product,
+      productSize,
       location: location || null,
       size: (size as string) || null
     }
@@ -43,12 +49,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 };
 
 const Home: NextPage<Props> = ({product, location, size, productSize}) => {
-  const productSizeOrder = sizeData
-    .filter((item) => productSize?.some(({size}) => size === item))
-    .map((size) => {
-      return {size};
-    });
-
   const [allProduct, setAllProduct] = useState<Product[]>(product);
   const {pathname, push} = useRouter();
 
@@ -56,7 +56,7 @@ const Home: NextPage<Props> = ({product, location, size, productSize}) => {
     ?.match(/([5-9]{1})([0-9]{1})([0-1]{0,1})/gm)
     ?.map((item) => item.slice(0, 1) + "'" + item.slice(1));
 
-  const initSize = productSizeOrder.filter(({size}) => sizeByUrl?.includes(size));
+  const initSize = productSize.filter(({size}) => sizeByUrl?.includes(size));
   const [sizeSelected, setSizeSelected] = useState<ProductSize[]>(initSize);
 
   const initLocation = locationData[location === 'badung' ? 1 : location === 'denpasar' ? 2 : 0];
@@ -122,7 +122,7 @@ const Home: NextPage<Props> = ({product, location, size, productSize}) => {
             />
             <MultipleListBoxUI
               containerClassName="z-10"
-              data={productSizeOrder}
+              data={productSize}
               setValue={setSizeSelected}
               value={sizeSelected}
             />
