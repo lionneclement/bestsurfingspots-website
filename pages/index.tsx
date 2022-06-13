@@ -46,7 +46,9 @@ const Home: NextPage<Props> = ({product, location, size, productSize}) => {
   const [allProduct, setAllProduct] = useState<Product[]>(product);
   const {pathname, push} = useRouter();
 
-  const sizeByUrl = size?.match(/.{1,2}/g)?.map((item) => item.slice(0, 1) + "'" + item.slice(1));
+  const sizeByUrl = size
+    ?.match(/([5-9]{1})([0-9]{1})([0-1]{0,1})/gm)
+    ?.map((item) => item.slice(0, 1) + "'" + item.slice(1));
   const initSize = productSize.filter(({size}) => sizeByUrl?.includes(size));
   const [sizeSelected, setSizeSelected] = useState<ProductSize[]>(initSize);
 
