@@ -7,6 +7,7 @@ import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import {ProductItem} from '../components/item/ProductItem';
 import {GroupModal} from '../components/modal/GroupModal';
+import {GcloudStoragePath} from '../config/link';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {UPDATE_VISIT_PRODUCT} from '../graphql/mutation/ProductMutation';
 import {PRODUCT_BY_ID, PRODUCT_BY_SIZE} from '../graphql/query/ProductQuery';
@@ -94,7 +95,17 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 relative gap-4">
             <Zoom>
               <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-lg overflow-hidden bg-gray-300">
-                <Image src={product.picture} alt={product.title} layout="fill" className="object-cover" priority />
+                <Image
+                  src={
+                    product.product_pictures.length > 0
+                      ? `${GcloudStoragePath}${product.product_pictures[0].url}`
+                      : product.picture
+                  }
+                  alt={product.title}
+                  layout="fill"
+                  className="object-cover"
+                  priority
+                />
               </div>
             </Zoom>
             <div className="px-2">
