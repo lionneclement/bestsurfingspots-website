@@ -69,7 +69,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
 
   const productClicked = () => (product.facebook_group.status === 'private' ? openModal() : viewProduct());
 
-  const headTitle = product.title;
+  const headTitle = ('Surfboards in Bali | ' + product.title).slice(0, 70);
   const headDescription = product.description;
   const image = product.picture;
   return useMemo(() => {
