@@ -12,11 +12,11 @@ const nextConfig = {
           destination: '/?location=:location'
         },
         {
-          source: '/buy-used-surfboards-in-:location-bali-indonesia-surfboards-size-:size',
+          source: '/buy-used-surfboards-in-:location-bali-indonesia-surfboards-size-:size(\\d{1,})',
           destination: '/?location=:location&size=:size'
         },
         {
-          source: '/surfboards-size-:size',
+          source: '/surfboards-size-:size(\\d{1,})',
           destination: '/?size=:size'
         },
         {
