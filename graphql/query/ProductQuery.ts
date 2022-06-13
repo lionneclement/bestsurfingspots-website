@@ -14,7 +14,7 @@ export const PRODUCT = gql`
   query Product {
     product(
       order_by: {facebook_group_id: desc, visit: desc}
-      where: {size: {_is_null: false}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}
+      where: {visible: {_eq: true}, size: {_is_null: false}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}
     ) {
       picture
       price
@@ -31,7 +31,12 @@ export const PRODUCT_BY_SIZE = gql`
   query Product($size: String!, $id: Int!) {
     product(
       order_by: {facebook_group_id: desc, visit: desc}
-      where: {size: {_eq: $size}, id: {_neq: $id}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}
+      where: {
+        visible: {_eq: true}
+        size: {_eq: $size}
+        id: {_neq: $id}
+        location: {_in: ["BADUNG", "Badung", "Denpasar"]}
+      }
     ) {
       picture
       price
