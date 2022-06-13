@@ -2,7 +2,13 @@ import gql from 'graphql-tag';
 
 export const PRODUCT_SITEMAP = gql`
   query Product {
-    product(where: {size: {_is_null: false}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}) {
+    product(
+      where: {
+        size: {_is_null: false}
+        location: {_in: ["BADUNG", "Badung", "Denpasar"]}
+        product_pictures: {url: {_is_null: false}}
+      }
+    ) {
       id
       title
       updated_at
@@ -14,7 +20,12 @@ export const PRODUCT = gql`
   query Product {
     product(
       order_by: {facebook_group_id: desc, visit: desc}
-      where: {visible: {_eq: true}, size: {_is_null: false}, location: {_in: ["BADUNG", "Badung", "Denpasar"]}}
+      where: {
+        visible: {_eq: true}
+        size: {_is_null: false}
+        location: {_in: ["BADUNG", "Badung", "Denpasar"]}
+        product_pictures: {url: {_is_null: false}}
+      }
     ) {
       picture
       price
@@ -23,6 +34,9 @@ export const PRODUCT = gql`
       size
       title
       id
+      product_pictures {
+        url
+      }
     }
   }
 `;
@@ -36,6 +50,7 @@ export const PRODUCT_BY_SIZE = gql`
         size: {_eq: $size}
         id: {_neq: $id}
         location: {_in: ["BADUNG", "Badung", "Denpasar"]}
+        product_pictures: {url: {_is_null: false}}
       }
     ) {
       picture
@@ -45,6 +60,9 @@ export const PRODUCT_BY_SIZE = gql`
       size
       title
       id
+      product_pictures {
+        url
+      }
     }
   }
 `;
@@ -68,6 +86,9 @@ export const PRODUCT_BY_ID = gql`
         link
         status
         picture
+      }
+      product_pictures {
+        url
       }
     }
   }

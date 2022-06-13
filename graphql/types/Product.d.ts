@@ -6,6 +6,9 @@ export interface Product {
   title: string;
   id: number;
   picture: string;
+  product_pictures: {
+    url: string;
+  }[];
 }
 
 export interface ProductById {
@@ -26,6 +29,9 @@ export interface ProductById {
     picture: string;
     description: string;
   };
+  product_pictures: {
+    url: string;
+  }[];
 }
 
 export interface ProductByIdVariable {
