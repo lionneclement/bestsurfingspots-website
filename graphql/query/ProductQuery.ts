@@ -93,3 +93,19 @@ export const PRODUCT_BY_ID = gql`
     }
   }
 `;
+
+export const PRODUCT_SIZE = gql`
+  query ProductSize {
+    product(
+      distinct_on: size
+      where: {
+        visible: {_eq: true}
+        size: {_is_null: false}
+        location: {_in: ["BADUNG", "Badung", "Denpasar"]}
+        product_pictures: {url: {_is_null: false}}
+      }
+    ) {
+      size
+    }
+  }
+`;
