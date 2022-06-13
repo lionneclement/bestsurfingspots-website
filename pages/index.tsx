@@ -6,7 +6,7 @@ import {useEffect, useMemo, useState} from 'react';
 import {ProductItem} from '../components/item/ProductItem';
 import {ListBoxUI} from '../components/ui/ListBoxUI';
 import {MultipleListBoxUI} from '../components/ui/MultipleListBoxUi';
-import {locationData, LocationDataTypes} from '../data/TableData';
+import {locationData, LocationDataTypes, sizeData} from '../data/FilterData';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {PRODUCT, PRODUCT_SIZE} from '../graphql/query/ProductQuery';
 import {Product, ProductSize} from '../graphql/types/Product';
@@ -43,13 +43,20 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
 };
 
 const Home: NextPage<Props> = ({product, location, size, productSize}) => {
+  const productSizeOrder = sizeData
+    .filter((item) => productSize?.some(({size}) => size === item))
+    .map((size) => {
+      return {size};
+    });
+
   const [allProduct, setAllProduct] = useState<Product[]>(product);
   const {pathname, push} = useRouter();
 
   const sizeByUrl = size
     ?.match(/([5-9]{1})([0-9]{1})([0-1]{0,1})/gm)
     ?.map((item) => item.slice(0, 1) + "'" + item.slice(1));
-  const initSize = productSize.filter(({size}) => sizeByUrl?.includes(size));
+
+  const initSize = productSizeOrder.filter(({size}) => sizeByUrl?.includes(size));
   const [sizeSelected, setSizeSelected] = useState<ProductSize[]>(initSize);
 
   const initLocation = locationData[location === 'badung' ? 1 : location === 'denpasar' ? 2 : 0];
@@ -115,7 +122,7 @@ const Home: NextPage<Props> = ({product, location, size, productSize}) => {
             />
             <MultipleListBoxUI
               containerClassName="z-10"
-              data={productSize}
+              data={productSizeOrder}
               setValue={setSizeSelected}
               value={sizeSelected}
             />
