@@ -1,7 +1,7 @@
 import {Listbox, Transition} from '@headlessui/react';
 import {CheckIcon, SelectorIcon} from '@heroicons/react/solid';
 import {Dispatch, Fragment, SetStateAction} from 'react';
-import {SizeDataTypes} from '../../data/TableData';
+import {ProductSize} from '../../graphql/types/Product';
 import {classNames} from '../../helpers/ClassName';
 
 export const MultipleListBoxUI = ({
@@ -10,9 +10,9 @@ export const MultipleListBoxUI = ({
   data,
   containerClassName = ''
 }: {
-  value: SizeDataTypes[];
-  setValue: Dispatch<SetStateAction<SizeDataTypes[]>>;
-  data: {name: string}[];
+  value: ProductSize[];
+  setValue: Dispatch<SetStateAction<ProductSize[]>>;
+  data: ProductSize[];
   containerClassName?: string;
 }) => {
   return (
@@ -38,8 +38,7 @@ export const MultipleListBoxUI = ({
                   value={data}>
                   {({selected}) => (
                     <>
-                      {/* @ts-ignore */}
-                      <span className={`block truncate`}>{data.name}</span>
+                      <span className={`block truncate`}>{data.size}</span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
@@ -53,7 +52,7 @@ export const MultipleListBoxUI = ({
           </Transition>
         </div>
       </Listbox>
-      <div className="p-2 text-sm">{value.length > 0 && <>Size: {value.map(({name}) => name).join(', ')}</>}</div>
+      <div className="p-2 text-sm">{value.length > 0 && <>Size: {value.map(({size}) => size).join(', ')}</>}</div>
     </div>
   );
 };

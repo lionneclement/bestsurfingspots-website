@@ -53,3 +53,7 @@ export interface UpdateVisitProduct {
   id: number;
   visit: number;
 }
+
+export interface ProductSize {
+  size: string;
+}
