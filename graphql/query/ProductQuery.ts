@@ -25,6 +25,7 @@ export const PRODUCT = gql`
         size: {_is_null: false}
         location: {_in: ["BADUNG", "Badung", "Denpasar"]}
         product_pictures: {url: {_is_null: false}}
+        in_stock: {_eq: true}
       }
     ) {
       picture
@@ -51,6 +52,7 @@ export const PRODUCT_BY_SIZE = gql`
         id: {_neq: $id}
         location: {_in: ["BADUNG", "Badung", "Denpasar"]}
         product_pictures: {url: {_is_null: false}}
+        in_stock: {_eq: true}
       }
     ) {
       picture
