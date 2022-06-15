@@ -96,7 +96,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
         </Head>
         <main className="lg:container">
           <div className="grid grid-cols-1 lg:grid-cols-3 relative gap-4 lg:mt-6">
-            <div className="lg:col-span-2 relative w-full h-[50vh] lg:h-[80vh] lg:rounded-lg lg:overflow-hidden bg-gray-300">
+            <div className="lg:col-span-2 relative w-full h-[50vh] lg:h-[80vh] lg:rounded-lg lg:overflow-hidden">
               <Swiper
                 pagination={{
                   clickable: true
@@ -115,12 +115,12 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
                   const urlFormatted: string =
                     product.product_pictures.length > 0 ? `${GcloudStoragePath}${url}` : product.picture;
                   return (
-                    <SwiperSlide key={index}>
+                    <SwiperSlide key={index} style={{backgroundImage: `url(${urlFormatted})`}} className={'bg-cover'}>
                       <Image
                         src={urlFormatted}
                         alt={product.title}
                         layout="fill"
-                        className="object-contain"
+                        className="object-contain backdrop-blur-lg"
                         priority={index === 0}
                       />
                     </SwiperSlide>
