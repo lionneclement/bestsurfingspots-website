@@ -3,7 +3,11 @@ import Head from 'next/head';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useMemo, useState} from 'react';
-import 'react-medium-image-zoom/dist/styles.css';
+import {Navigation, Pagination} from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import {Swiper, SwiperSlide} from 'swiper/react';
 import {ProductItem} from '../components/item/ProductItem';
 import {GroupModal} from '../components/modal/GroupModal';
 import {GcloudStoragePath} from '../config/link';
@@ -93,17 +97,35 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
         <main className="lg:container">
           <div className="grid grid-cols-1 lg:grid-cols-3 relative gap-4 lg:mt-6">
             <div className="lg:col-span-2 relative w-full h-[50vh] lg:h-[80vh] lg:rounded-lg lg:overflow-hidden bg-gray-300">
-              <Image
-                src={
-                  product.product_pictures.length > 0
-                    ? `${GcloudStoragePath}${product.product_pictures[0].url}`
-                    : product.picture
-                }
-                alt={product.title}
-                layout="fill"
-                className="object-cover"
-                priority
-              />
+              <Swiper
+                pagination={{
+                  clickable: true
+                }}
+                style={{
+                  '--swiper-navigation-color': '#fff',
+                  '--swiper-pagination-color': '#fff'
+                }}
+                slidesPerView={1}
+                spaceBetween={10}
+                navigation={true}
+                modules={[Navigation, Pagination]}
+                className="w-full h-full relative">
+                {product.product_pictures.map(({url}, index) => {
+                  const urlFormatted: string =
+                    product.product_pictures.length > 0 ? `${GcloudStoragePath}${url}` : product.picture;
+                  return (
+                    <SwiperSlide key={index}>
+                      <Image
+                        src={urlFormatted}
+                        alt={product.title}
+                        layout="fill"
+                        className="object-cover"
+                        priority={index === 0}
+                      />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
             </div>
             <div className="px-6 lg:px-2">
               <div onClick={productClicked} role="button">
