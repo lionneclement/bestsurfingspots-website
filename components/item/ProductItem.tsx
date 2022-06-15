@@ -20,21 +20,19 @@ export const ProductItem = ({products}: {products: Product[]}) => {
                   priority={index < 8}
                 />
               </div>
-              <div className="px-3 pt-3">
+              <div className="p-3">
                 <div className="flex justify-between text-gray-500">
                   <span>Size {size}</span>
                   <span>{location}</span>
                 </div>
-                <div className="truncate">
+                <div className="truncate my-2">
                   <Link href={surfboardLink({id, title})}>
                     <a className="stretched-link" title={title}>
                       <span className="text-lg font-semibold my-1">{title}</span>
                     </a>
                   </Link>
                 </div>
-                <div className="flex justify-between mb-2">
-                  <span>{price}</span>
-                </div>
+                <span>{price}</span>
               </div>
             </div>
           );
