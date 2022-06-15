@@ -89,7 +89,7 @@ const Home: NextPage<Props> = ({product, location, size, productSize}) => {
 
   const headTitle = 'Buy used Surfboards in Bali, Indonesia';
   const headDescription =
-    'Sale, Buy or Trade Surf, Surfing, Bodyboarding, snowboarding, skateboarding stuff for free, Bali Indonesia used new surfboards wetsuits accessories etc';
+    'Buy or sell your new or secondhand|used surfboard for free on the beautiful island of Bali Indonesia';
   const image = 'https://storage.googleapis.com/bestsurfingspots/home.jpg';
   return useMemo(() => {
     return (
