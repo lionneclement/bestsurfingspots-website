@@ -3,8 +3,11 @@ import Head from 'next/head';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useMemo, useState} from 'react';
-import Zoom from 'react-medium-image-zoom';
-import 'react-medium-image-zoom/dist/styles.css';
+import {Navigation, Pagination} from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import {Swiper, SwiperSlide} from 'swiper/react';
 import {ProductItem} from '../components/item/ProductItem';
 import {GroupModal} from '../components/modal/GroupModal';
 import {GcloudStoragePath} from '../config/link';
@@ -69,7 +72,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
 
   const productClicked = () => (product.facebook_group.status === 'private' ? openModal() : viewProduct());
 
-  const headTitle = (`Surfboard ${product.size} in ${product.location} Bali Indonesia ${product.title}`).slice(0, 70);
+  const headTitle = `Surfboard ${product.size} in ${product.location} Bali Indonesia ${product.title}`.slice(0, 70);
   const headDescription = product.description;
   const image = product.picture;
   return useMemo(() => {
@@ -91,34 +94,54 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
           <meta data-rh property="og:url" content={pathname} />
           <meta data-rh property="og:image" content={image} />
         </Head>
-        <main className="container sm:my-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 relative gap-4">
-            <Zoom>
-              <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-lg overflow-hidden bg-gray-300">
-                <Image
-                  src={
-                    product.product_pictures.length > 0
-                      ? `${GcloudStoragePath}${product.product_pictures[0].url}`
-                      : product.picture
-                  }
-                  alt={product.title}
-                  layout="fill"
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </Zoom>
-            <div className="px-2">
+        <main className="lg:container">
+          <div className="grid grid-cols-1 lg:grid-cols-3 relative gap-4 lg:mt-6">
+            <div className="lg:col-span-2 relative w-full h-[50vh] lg:h-[80vh] lg:rounded-lg lg:overflow-hidden">
+              <Swiper
+                pagination={{
+                  clickable: true
+                }}
+                style={{
+                  // @ts-ignore
+                  '--swiper-navigation-color': '#fff',
+                  '--swiper-pagination-color': '#fff'
+                }}
+                slidesPerView={1}
+                spaceBetween={10}
+                navigation={true}
+                modules={[Navigation, Pagination]}
+                className="w-full h-full relative">
+                {product.product_pictures.map(({url}, index) => {
+                  const urlFormatted: string =
+                    product.product_pictures.length > 0 ? `${GcloudStoragePath}${url}` : product.picture;
+                  return (
+                    <SwiperSlide key={index} style={{backgroundImage: `url(${urlFormatted})`}} className={'bg-cover'}>
+                      <Image
+                        src={urlFormatted}
+                        alt={product.title}
+                        layout="fill"
+                        className="object-contain backdrop-blur-lg"
+                        priority={index === 0}
+                      />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </div>
+            <div className="px-6 lg:px-2">
               <div onClick={productClicked} role="button">
-                <h1 className="text-center text-primary font-bold text-4xl">{product.title}</h1>
-                <p className="mt-4">{product.description.replace('… See more', '')}</p>
+                <h1 className="text-primary font-bold text-3xl">{capitalize(product.title)}</h1>
+                <span className="text-lg">
+                  <strong>{product.price}</strong>
+                </span>
+                <span className="text-lg block mt-6">
+                  <strong>Details</strong>
+                </span>
+                <p className="mt-2">{product.description.replace('… See more', '')}</p>
                 <div className="mb-2 mt-6 flex justify-between font-medium">
                   <span>Size: {product.size}</span>
                   <span>📍{product.location}</span>
                 </div>
-                <span className="text-lg">
-                  <strong>{product.price}</strong>
-                </span>
               </div>
               <div onClick={() => window.open(product.facebook_group.link, '_ blank')} role="button">
                 <span className="mt-10 block font-semibold text-lg">From Facebook Group</span>
@@ -150,12 +173,14 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
               </div>
             </div>
           </div>
-          {productBySize.length > 0 && (
-            <>
-              <h2 className="font-semibold text-2xl mt-20 text-primary">More Surfboards {product.size}</h2>
-              <ProductItem products={productBySize} />
-            </>
-          )}
+          <div className="container lg:p-0">
+            {productBySize.length > 0 && (
+              <>
+                <h2 className="font-semibold text-2xl mt-20 text-primary">More Surfboards {product.size}</h2>
+                <ProductItem products={productBySize} />
+              </>
+            )}
+          </div>
           <GroupModal isOpen={isOpen} joinGroup={joinGroup} viewProduct={viewProduct} closeModal={closeModal} />
         </main>
       </>
