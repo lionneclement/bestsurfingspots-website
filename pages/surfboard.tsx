@@ -102,6 +102,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
                   clickable: true
                 }}
                 style={{
+                  // @ts-ignore
                   '--swiper-navigation-color': '#fff',
                   '--swiper-pagination-color': '#fff'
                 }}
@@ -119,7 +120,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
                         src={urlFormatted}
                         alt={product.title}
                         layout="fill"
-                        className="object-cover"
+                        className="object-contain"
                         priority={index === 0}
                       />
                     </SwiperSlide>
