@@ -4,6 +4,7 @@ export const PRODUCT_SITEMAP = gql`
   query Product {
     product(
       where: {
+        visible: {_eq: true}
         size: {_is_null: false}
         location: {_in: ["BADUNG", "Badung", "Denpasar"]}
         product_pictures: {url: {_is_null: false}}
@@ -35,7 +36,7 @@ export const PRODUCT = gql`
       size
       title
       id
-      product_pictures {
+      product_pictures(limit: 1) {
         url
       }
     }
@@ -62,7 +63,7 @@ export const PRODUCT_BY_SIZE = gql`
       size
       title
       id
-      product_pictures {
+      product_pictures(limit: 1) {
         url
       }
     }
@@ -81,6 +82,8 @@ export const PRODUCT_BY_ID = gql`
       size
       title
       url
+      visible
+      in_stock
       facebook_group {
         description
         name
@@ -105,6 +108,7 @@ export const PRODUCT_SIZE = gql`
         size: {_is_null: false}
         location: {_in: ["BADUNG", "Badung", "Denpasar"]}
         product_pictures: {url: {_is_null: false}}
+        in_stock: {_eq: true}
       }
     ) {
       size

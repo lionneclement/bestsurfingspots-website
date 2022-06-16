@@ -40,7 +40,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
     variables: {id: Number(id)}
   });
 
-  if (!data.product || slug !== customSlugify(data.product.title.replace(/\//g, '-'))) return {notFound: true};
+  if (!data.product || !data.product.visible || slug !== customSlugify(data.product.title.replace(/\//g, '-')))
+    return {notFound: true};
 
   const productSizeResult = await graphqlClient.query<{product: Product[]}, ProductBySizeVariable>({
     query: PRODUCT_BY_SIZE,
@@ -70,7 +71,11 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
     closeModal();
   };
 
-  const productClicked = () => (product.facebook_group.status === 'private' ? openModal() : viewProduct());
+  const productClicked = () => {
+    if (product.in_stock) {
+      product.facebook_group.status === 'private' ? openModal() : viewProduct();
+    }
+  };
 
   const headTitle = `Surfboard ${product.size} in ${product.location} Bali Indonesia ${product.title}`.slice(0, 70);
   const headDescription = product.description;
@@ -130,6 +135,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
             </div>
             <div className="px-6 lg:px-2">
               <div onClick={productClicked} role="button">
+                {!product.in_stock && <span className="text-3xl font-bold text-red-600">Sold</span>}
                 <h1 className="text-primary font-bold text-3xl">{capitalize(product.title)}</h1>
                 <span className="text-lg">
                   <strong>{product.price}</strong>

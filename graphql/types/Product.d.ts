@@ -20,7 +20,9 @@ export interface ProductById {
   size: string;
   title: string;
   url: string;
+  visible: boolean;
   picture: string;
+  in_stock: Boolean;
   facebook_group: {
     name: string;
     members: number;
