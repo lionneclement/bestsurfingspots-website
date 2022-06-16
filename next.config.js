@@ -4,6 +4,20 @@ const nextConfig = {
     domains: ['scontent-cdg2-1.xx.fbcdn.net', 'scontent-cdt1-1.xx.fbcdn.net', 'storage.googleapis.com']
   },
   swcMinify: true,
+  redirects: async () => {
+    return [
+      {
+        source: '/surf-area/:id(\\d{1,})-:slug',
+        destination: '/',
+        permanent: true
+      },
+      {
+        source: '/country/:id(\\d{1,})-:slug',
+        destination: '/',
+        permanent: true
+      }
+    ];
+  },
   rewrites: async () => {
     return {
       fallback: [
