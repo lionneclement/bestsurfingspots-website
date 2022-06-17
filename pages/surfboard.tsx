@@ -95,7 +95,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
                 pagination={{
                   clickable: true
                 }}
-                loop
+                loop={product.product_pictures.length > 1}
                 style={{
                   // @ts-ignore
                   '--swiper-navigation-color': '#fff',
