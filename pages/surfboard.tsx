@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import {ProductItem} from '../components/item/ProductItem';
-import {GroupModal} from '../components/modal/GroupModal';
+import {MessageModal} from '../components/modal/MessageModal';
 import {GcloudStoragePath} from '../config/link';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {UPDATE_VISIT_PRODUCT} from '../graphql/mutation/ProductMutation';
@@ -21,7 +21,6 @@ import {
   ProductBySizeVariable,
   UpdateVisitProduct
 } from '../graphql/types/Product';
-import {memberFormatter} from '../helpers/Number';
 import {capitalize} from '../helpers/String';
 import {customSlugify} from '../utils/slugify';
 
@@ -62,19 +61,9 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
-  const joinGroup = () => {
-    window.open(product.facebook_group.link, '_ blank');
-    closeModal();
-  };
-  const viewProduct = () => {
-    window.open(product.url, '_ blank');
-    closeModal();
-  };
 
   const productClicked = () => {
-    if (product.in_stock) {
-      product.facebook_group.status === 'private' ? openModal() : viewProduct();
-    }
+    openModal();
   };
 
   const headTitle = `Surfboard ${product.size} in ${product.location} Bali Indonesia ${product.title}`.slice(0, 70);
@@ -149,32 +138,11 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
                   <span>📍{product.location}</span>
                 </div>
               </div>
-              <div onClick={() => window.open(product.facebook_group.link, '_ blank')} role="button">
-                <span className="mt-10 block font-semibold text-lg">From Facebook Group</span>
-                <div className="mt-2 flex justify-between bg-[#7490a3] p-4 rounded-lg cursor-pointer text-white">
-                  <div className="mt-2 min-h-[4rem] min-w-[4rem] relative h-fit rounded-lg overflow-hidden mr-4">
-                    <Image
-                      src={product.facebook_group.picture}
-                      alt={product.facebook_group.name}
-                      layout="fill"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <span className="block font-medium text-lg">{product.facebook_group.name}</span>
-                    <span className="block text-gray-200">
-                      {capitalize(product.facebook_group.status)} group -{' '}
-                      {memberFormatter(product.facebook_group.members)}
-                    </span>
-                    <span className="text-clip text-sm text-gray-300">{product.facebook_group.description}</span>
-                  </div>
-                </div>
-              </div>
               <div className="mt-12 flex justify-center">
                 <button
                   onClick={productClicked}
                   className="rounded-lg bg-primary font-medium text-lg text-white text-center py-4 px-16 cursor-pointer">
-                  View Full Details
+                  💬 Message seller
                 </button>
               </div>
             </div>
@@ -187,7 +155,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
               </>
             )}
           </div>
-          <GroupModal isOpen={isOpen} joinGroup={joinGroup} viewProduct={viewProduct} closeModal={closeModal} />
+          <MessageModal isOpen={isOpen} closeModal={closeModal} />
         </main>
       </>
     );

@@ -84,14 +84,6 @@ export const PRODUCT_BY_ID = gql`
       url
       visible
       in_stock
-      facebook_group {
-        description
-        name
-        members
-        link
-        status
-        picture
-      }
       product_pictures {
         url
       }
