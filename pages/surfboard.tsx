@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import {ProductItem} from '../components/item/ProductItem';
-import {MessageModal} from '../components/modal/GroupModal';
+import {MessageModal} from '../components/modal/MessageModal';
 import {GcloudStoragePath} from '../config/link';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {UPDATE_VISIT_PRODUCT} from '../graphql/mutation/ProductMutation';
