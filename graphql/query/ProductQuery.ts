@@ -7,7 +7,6 @@ export const PRODUCT_SITEMAP = gql`
         visible: {_eq: true}
         size: {_is_null: false}
         location: {_in: ["BADUNG", "Badung", "Denpasar"]}
-        product_pictures: {url: {_is_null: false}}
       }
     ) {
       id
@@ -25,7 +24,6 @@ export const PRODUCT = gql`
         visible: {_eq: true}
         size: {_is_null: false}
         location: {_in: ["BADUNG", "Badung", "Denpasar"]}
-        product_pictures: {url: {_is_null: false}}
         in_stock: {_eq: true}
       }
     ) {
@@ -52,7 +50,6 @@ export const PRODUCT_BY_SIZE = gql`
         size: {_eq: $size}
         id: {_neq: $id}
         location: {_in: ["BADUNG", "Badung", "Denpasar"]}
-        product_pictures: {url: {_is_null: false}}
         in_stock: {_eq: true}
       }
     ) {
@@ -99,7 +96,6 @@ export const PRODUCT_SIZE = gql`
         visible: {_eq: true}
         size: {_is_null: false}
         location: {_in: ["BADUNG", "Badung", "Denpasar"]}
-        product_pictures: {url: {_is_null: false}}
         in_stock: {_eq: true}
       }
     ) {

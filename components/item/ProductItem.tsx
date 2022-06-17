@@ -12,7 +12,11 @@ export const ProductItem = ({products}: {products: Product[]}) => {
           <div key={index} className="relative h-full border rounded-lg overflow-hidden">
             <div className="relative w-full h-72 bg-gray-300">
               <Image
-                src={product_pictures.length > 0 ? `${GcloudStoragePath}${product_pictures[0].url}` : picture}
+                src={
+                  product_pictures.length > 0
+                    ? `${GcloudStoragePath}${product_pictures[0].url}`
+                    : GcloudStoragePath + picture
+                }
                 alt={title}
                 layout="fill"
                 className="object-cover w-full relative"

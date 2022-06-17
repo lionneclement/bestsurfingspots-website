@@ -105,21 +105,40 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
                 navigation={true}
                 modules={[Navigation, Pagination]}
                 className="w-full h-full relative">
-                {product.product_pictures.map(({url}, index) => {
-                  const urlFormatted: string =
-                    product.product_pictures.length > 0 ? `${GcloudStoragePath}${url}` : product.picture;
-                  return (
-                    <SwiperSlide key={index} style={{backgroundImage: `url(${urlFormatted})`}} className={'bg-cover'}>
-                      <Image
-                        src={urlFormatted}
-                        alt={product.title}
-                        layout="fill"
-                        className="object-contain backdrop-blur-lg"
-                        priority={index === 0}
-                      />
-                    </SwiperSlide>
-                  );
-                })}
+                {product.product_pictures.length > 0 ? (
+                  <>
+                    {product.product_pictures.map(({url}, index) => {
+                      const urlFormatted: string =
+                        product.product_pictures.length > 0 ? `${GcloudStoragePath}${url}` : product.picture;
+                      return (
+                        <SwiperSlide
+                          key={index}
+                          style={{backgroundImage: `url(${urlFormatted})`}}
+                          className={'bg-cover'}>
+                          <Image
+                            src={urlFormatted}
+                            alt={product.title}
+                            layout="fill"
+                            className="object-contain backdrop-blur-lg"
+                            priority={index === 0}
+                          />
+                        </SwiperSlide>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <SwiperSlide
+                    style={{backgroundImage: `url(${GcloudStoragePath + product.picture})`}}
+                    className={'bg-cover'}>
+                    <Image
+                      src={GcloudStoragePath + product.picture}
+                      alt={product.title}
+                      layout="fill"
+                      className="object-contain backdrop-blur-lg"
+                      priority
+                    />
+                  </SwiperSlide>
+                )}
               </Swiper>
             </div>
             <div className="px-6 lg:px-2">
