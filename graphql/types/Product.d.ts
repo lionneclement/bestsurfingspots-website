@@ -23,14 +23,6 @@ export interface ProductById {
   visible: boolean;
   picture: string;
   in_stock: Boolean;
-  facebook_group: {
-    name: string;
-    members: number;
-    link: string;
-    status: string;
-    picture: string;
-    description: string;
-  };
   product_pictures: {
     url: string;
   }[];
