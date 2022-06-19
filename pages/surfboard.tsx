@@ -175,7 +175,7 @@ const SurfBoard: NextPage<Props> = ({product, productBySize}) => {
               </>
             )}
           </div>
-          <MessageModal isOpen={isOpen} closeModal={closeModal} />
+          <MessageModal isOpen={isOpen} closeModal={closeModal} productId={product.id} />
         </main>
       </>
     );

@@ -6,7 +6,15 @@ import {graphqlClient} from '../../graphql/GraphqlClient';
 import {ADD_MESSAGE} from '../../graphql/mutation/MessageMutation';
 import {AddMessage, AddMessageVariable} from '../../graphql/types/Message';
 
-export const MessageModal = ({isOpen, closeModal}: {closeModal: () => void; isOpen: boolean}) => {
+export const MessageModal = ({
+  isOpen,
+  closeModal,
+  productId
+}: {
+  closeModal: () => void;
+  isOpen: boolean;
+  productId: number;
+}) => {
   const textareaRef = useRef<HTMLInputElement | null>(null);
 
   return (
@@ -51,14 +59,14 @@ export const MessageModal = ({isOpen, closeModal}: {closeModal: () => void; isOp
                     onSubmit={(values) => {
                       graphqlClient.mutate<{message: AddMessage}, AddMessageVariable>({
                         mutation: ADD_MESSAGE,
-                        variables: {email: values.email, content: values.message}
+                        variables: {email: values.email, content: values.message, product_id: productId}
                       });
                     }}>
                     {({isSubmitting}) =>
                       isSubmitting ? (
                         <div className="text-center flex flex-col items-center">
                           <CheckIcon className="h-32 w-32" aria-hidden="true" />
-                          <span className='font-semibold text-primary text-2xl'>Message delivered!</span>
+                          <span className="font-semibold text-primary text-2xl">Message delivered!</span>
                           <span className="inline-block">Your message was sent successfully</span>
                         </div>
                       ) : (
