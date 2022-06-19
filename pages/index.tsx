@@ -4,9 +4,8 @@ import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useEffect, useMemo, useState} from 'react';
 import {ProductItem} from '../components/item/ProductItem';
-import {ListBoxUI} from '../components/ui/ListBoxUI';
 import {MultipleListBoxUI} from '../components/ui/MultipleListBoxUi';
-import {locationData, LocationDataTypes, sizeData} from '../data/FilterData';
+import {sizeData} from '../data/FilterData';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {PRODUCT, PRODUCT_SIZE} from '../graphql/query/ProductQuery';
 import {Product, ProductSize} from '../graphql/types/Product';
@@ -15,7 +14,6 @@ import {customSlugify} from '../utils/slugify';
 interface Props {
   product: Product[];
   productSize: ProductSize[];
-  location: null | string | string[];
   size: null | string;
 }
 
@@ -42,13 +40,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
     props: {
       product: productResult.data.product,
       productSize,
-      location: location || null,
       size: (size as string) || null
     }
   };
 };
 
-const Home: NextPage<Props> = ({product, location, size, productSize}) => {
+const Home: NextPage<Props> = ({product, size, productSize}) => {
   const [allProduct, setAllProduct] = useState<Product[]>(product);
   const {pathname, push} = useRouter();
 
@@ -59,33 +56,19 @@ const Home: NextPage<Props> = ({product, location, size, productSize}) => {
   const initSize = productSize.filter(({size}) => sizeByUrl?.includes(size));
   const [sizeSelected, setSizeSelected] = useState<ProductSize[]>(initSize);
 
-  const initLocation = locationData[location === 'badung' ? 1 : location === 'denpasar' ? 2 : 0];
-  const [locationSelected, setLocationSelected] = useState<LocationDataTypes>(initLocation);
-
   useEffect(() => {
-    let newProduct = product;
-
     if (sizeSelected.length > 0) {
-      newProduct = product.filter(({size}) => sizeSelected.map(({size}) => size).includes(size));
+      setAllProduct(product.filter(({size}) => sizeSelected.map(({size}) => size).includes(size)));
     }
-    if (locationSelected.id > 0) {
-      newProduct = newProduct.filter(
-        ({location}) => location.toLocaleLowerCase() === locationSelected.name.toLocaleLowerCase()
-      );
-    }
-
-    setAllProduct(newProduct);
-  }, [sizeSelected, locationSelected]);
+  }, [sizeSelected]);
 
   useEffect(() => {
-    const formatLocationUrl = () => `buy-used-surfboards-in-${locationSelected.name}-bali-indonesia`;
-    const formatSizeUrl = () => `${url && '-'}surfboards-size-${sizeSelected.map(({size}) => size)}`;
-
     let url = '';
-    if (locationSelected.id > 0) url += formatLocationUrl();
+    const formatSizeUrl = () => `surfboards-size-${sizeSelected.map(({size}) => size)}`;
+
     if (sizeSelected.length > 0) url += formatSizeUrl();
     push('/' + customSlugify(url), undefined, {shallow: true});
-  }, [locationSelected, sizeSelected]);
+  }, [sizeSelected]);
 
   const headTitle = 'Buy used Surfboards in Bali, Indonesia';
   const headDescription =
@@ -114,12 +97,6 @@ const Home: NextPage<Props> = ({product, location, size, productSize}) => {
           <h1 className="text-center text-primary font-bold text-4xl">Buy and Sell</h1>
           <p className="text-center text-gray-400 font-medium text-lg mt-2">Buy used Surfboards in Bali, Indonesia</p>
           <div className="flex justify-around my-6 flex-wrap">
-            <ListBoxUI
-              value={locationSelected}
-              setValue={setLocationSelected}
-              data={locationData}
-              containerClassName="z-20"
-            />
             <MultipleListBoxUI
               containerClassName="z-10"
               data={productSize}
@@ -138,7 +115,7 @@ const Home: NextPage<Props> = ({product, location, size, productSize}) => {
         </main>
       </>
     );
-  }, [allProduct, sizeSelected, locationSelected]);
+  }, [allProduct, sizeSelected]);
 };
 
 export default Home;
