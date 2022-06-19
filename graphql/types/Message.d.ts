@@ -5,4 +5,5 @@ export interface AddMessage {
 export interface AddMessageVariable {
   email: string;
   content: string;
+  product_id: number;
 }
