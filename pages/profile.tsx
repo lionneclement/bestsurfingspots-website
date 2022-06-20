@@ -1,38 +1,34 @@
-import {useAuthUser, withAuthUser, withAuthUserTokenSSR} from 'next-firebase-auth';
-import Link from 'next/link';
+import {AuthAction, useAuthUser, withAuthUser} from 'next-firebase-auth';
+import Head from 'next/head';
+import Image from 'next/image';
 
 const Profile = () => {
-  const AuthUser = useAuthUser();
+  const {photoURL, displayName, signOut, email} = useAuthUser();
 
   return (
     <>
-      <main className="lg:container">
-        {AuthUser.email ? (
-          <>
-            <p>Signed in as {AuthUser.email}</p>
-            <button
-              type="button"
-              onClick={() => {
-                AuthUser.signOut();
-              }}>
-              Sign out
-            </button>
-          </>
-        ) : (
-          <>
-            <p>You are not signed in.</p>
-            <Link href="/auth">
-              <a>
-                <button type="button">Sign in</button>
-              </a>
-            </Link>
-          </>
-        )}
+      <Head>
+        <title>Profile</title>
+        <meta name="robots" content="noindex,nofollow" />
+      </Head>
+      <main className="container">
+        <h1 className="mt-6 text-primary font-bold text-4xl">Profile</h1>
+        <div className="flex flex-col items-center mt-10">
+          {photoURL && <Image className="rounded-full" src={photoURL} alt={displayName || ''} height={96} width={96} />}
+          {displayName && <span className="font-semibold text-lg">{displayName}</span>}
+          {email && <span>{email}</span>}
+          <button
+            onClick={() => signOut()}
+            className="mt-10 rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white">
+            Sign Out
+          </button>
+        </div>
       </main>
     </>
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR()();
-
-export default withAuthUser()(Profile);
+export default withAuthUser({
+  whenAuthed: AuthAction.RENDER,
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
+})(Profile);

@@ -2,8 +2,9 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import type {AppProps} from 'next/app';
 import {useRouter} from 'next/router';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {hotjar} from 'react-hotjar';
+import {UserContext} from '../context/UserContext';
 import {graphqlClient} from '../graphql/GraphqlClient';
 import {ADD_USER, UPDATE_USER} from '../graphql/mutation/UserMutation';
 import {USER} from '../graphql/query/UserQuery';
@@ -16,13 +17,14 @@ import {trackPageView} from '../utils/google-tag';
 initAuth();
 
 const MyApp = ({Component, pageProps}: AppProps) => {
+  const [user, setUser] = useState<firebase.User | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (firebaseUser) => {
+      setUser(firebaseUser);
       if (firebaseUser?.uid) {
-        const {uid, email, displayName, photoURL, providerId} = firebaseUser;
-        console.log('providerId: ', providerId);
+        const {uid, email, displayName, photoURL} = firebaseUser;
         const userResult = await graphqlClient.query<{user: User[]}, UserVariable>({
           query: USER,
           variables: {firebase_id: uid},
@@ -59,9 +61,11 @@ const MyApp = ({Component, pageProps}: AppProps) => {
   }, []);
 
   return (
-    <DefaultLayout>
-      <Component {...pageProps} />
-    </DefaultLayout>
+    <UserContext.Provider value={{user, setUser}}>
+      <DefaultLayout>
+        <Component {...pageProps} />
+      </DefaultLayout>
+    </UserContext.Provider>
   );
 };
 

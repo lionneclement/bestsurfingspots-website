@@ -1,29 +1,21 @@
 import {AuthAction, withAuthUser} from 'next-firebase-auth';
+import Head from 'next/head';
 import FirebaseAuth from '../components/firebase/FirebaseAuth';
 
-const styles = {
-  content: {
-    padding: `8px 32px`
-  },
-  textContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    margin: 16
-  }
-};
-
 const Auth = () => (
-  <div style={styles.content}>
-    <h3>Sign in</h3>
-    <div style={styles.textContainer}>
-      <p>
-        This auth page is <b>static</b>. It will redirect on the client side if the user is already authenticated.
-      </p>
-    </div>
-    <div>
-      <FirebaseAuth />
-    </div>
-  </div>
+  <>
+    <Head>
+      <title>Sign In</title>
+      <meta name="robots" content="noindex,nofollow" />
+    </Head>
+    <main className="container text-center">
+      <h1 className="mt-6 text-primary font-bold text-4xl">Sign in to BestSurfingSpots</h1>
+      <span className="mt-2 block font-medium">Sign In to your account to find used Surfboards in Bali, Indonesia</span>
+      <div className="mt-12">
+        <FirebaseAuth />
+      </div>
+    </main>
+  </>
 );
 
 export default withAuthUser({
